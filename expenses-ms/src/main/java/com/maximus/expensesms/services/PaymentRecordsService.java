@@ -1,0 +1,111 @@
+package com.maximus.expensesms.services;
+
+
+import com.maximus.expensesms.models.ExpenseType;
+import com.maximus.expensesms.models.PaymentRecord;
+import com.maximus.expensesms.models.Subject;
+import com.maximus.expensesms.models.SubjectType;
+import com.maximus.expensesms.repositories.PaymentRecordsRepo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.*;
+
+@Service
+@RequiredArgsConstructor
+public class PaymentRecordsService {
+
+    private final PaymentRecordsRepo paymentsRepo;
+    private final ExpenseTypeService expenseTypeService;
+    private final SubjectTypeService subjectTypeService;
+    private final SubjectService subjectService;
+
+    public List<PaymentRecord> getAllPaymentRecords() {
+        return paymentsRepo.findAll();
+    }
+
+    public String summarizeRecords(List<Long> listOfRecordsIds) {
+        Double sum = listOfRecordsIds.stream().map(id -> getRecordById(id).getAmount()).reduce(0.0, Double::sum);
+        return String.format("%.2f", sum);
+    }
+
+    public PaymentRecord getRecordById(Long id) {
+        Optional<PaymentRecord> optPaymentRecord = paymentsRepo.findById(id);
+        return optPaymentRecord.orElse(null);
+    }
+
+    //    public Map<Long, >
+    public PaymentRecord addPaymentRecord(PaymentRecord paymentRecord) {
+        if (paymentRecord.getInputTime() == null) {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//        paymentRecord.setTime(new Date());
+            paymentRecord.setInputTime(new Date(System.currentTimeMillis()));
+        }
+        return paymentsRepo.save(paymentRecord);
+    }
+
+    //region Вспомогательные методы по сбору данных в строку и сумма
+    public List<String> dataToStringMapping(PaymentRecord paymentRecord) {
+
+
+        ExpenseType expType = expenseTypeService.getExpenseTypeById(paymentRecord.getIdExpenseType());
+        String expCategory = expType.getExpenseCategory().getName();
+        String expTypeString = expType.getName();
+
+        SubjectType subjectType = subjectTypeService.getSubjectTypeById(paymentRecord.getIdSubjectType());
+        String subjTypeString = subjectType.getName();
+
+        Subject subject = subjectService.getSubjectById(paymentRecord.getIdSubject());
+        String subjectString = subject.getName();
+
+        List<String> dataStringList = new ArrayList<>(List.of(expCategory, expTypeString, subjTypeString, subjectString));
+
+        return dataStringList;
+    }
+
+    public Map<Long, List<String>> recordsStringProcessing(List<PaymentRecord> paymentRecordList) {
+        Map<Long, List<String>> map = new HashMap<>();
+        for (PaymentRecord pr : paymentRecordList) {
+            map.put(pr.getId(), dataToStringMapping(pr));
+        }
+        return map;
+    }
+
+
+    //endregion
+
+
+    public PaymentRecord getPaymentRecordById(Long id) {
+        Optional<PaymentRecord> optPaymentRecord = paymentsRepo.findById(id);
+        return optPaymentRecord.orElse(null);
+    }
+
+    public PaymentRecord updatePaymentRecord(Long id, PaymentRecord paymentRecordDetails) {
+        Optional<PaymentRecord> optionalRecord = paymentsRepo.findById(id);
+        if (optionalRecord.isPresent()) {
+            PaymentRecord paymentRecord = optionalRecord.get();
+            paymentRecord.setIdExpenseCategory(paymentRecordDetails.getIdExpenseCategory());
+            paymentRecord.setIdExpenseType(paymentRecordDetails.getIdExpenseType());
+            paymentRecord.setIdSubjectType(paymentRecordDetails.getIdSubjectType());
+            paymentRecord.setIdSubject(paymentRecordDetails.getIdSubject());
+            paymentRecord.setPeriod(paymentRecordDetails.getPeriod());
+            paymentRecord.setAmount(paymentRecordDetails.getAmount());
+            paymentRecord.setNote(paymentRecordDetails.getNote());
+            paymentRecord.setPaymentDate(paymentRecordDetails.getPaymentDate());
+
+            return paymentsRepo.save(paymentRecord);
+        } else {
+            throw new IllegalArgumentException("Запись с id" + id + "не найдена");
+        }
+    }
+
+    public void deletePaymentRecord(Long id) {
+        paymentsRepo.deleteById(id);
+    }
+
+    public Double summarizeAllPaymentRecords(LocalDate dateFrom, LocalDate dateTo){
+      return paymentsRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
+    }
+}

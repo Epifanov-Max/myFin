@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysqlMyFin
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: myFinance
+      MYSQL_ROOT_PASSWORD: 12345
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.containers/database:/var/lib/mysql

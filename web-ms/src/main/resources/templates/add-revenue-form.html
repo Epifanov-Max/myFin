@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add revenue</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+    <link rel="stylesheet" href="../static/style.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <h2> <span th:text="${page_name}"> </span> </h2>
+    <hr/>
+
+    <form th:action="@{/revenues-list/save-revenue-record}" th:object="${revenueRecord}" method="post">
+
+
+                <!-- <div class="placeholder" id="revenueType" value="Введите тип дохода"></div> -->
+                
+                <select th:field="${revenueRecord.idRevenueType}" class="form-control col-4 mb-4">
+                    
+                <!-- <option value=""> Выберите тип дохода </option> -->
+                <option value=""> Выберите тип дохода </option>
+                <option th:each="revenueType : ${revenueTypes}" 
+                        th:value="${revenueType.id}"
+                        th:text="${revenueType.name}"
+                        th:selected = "${revenueType.id==revenueRecord.idRevenueType}">
+                </option>
+               </select>
+
+        <input type="number" min="0" step="0.01" onfocus="(this.type='number')" onblur="(this.type = 'text')" th:field="${revenueRecord.amount}" placeholder="Введите сумму" class="form-control col-4 mb-4"/>
+        <input type="text" th:field="${revenueRecord.note}" placeholder="Введите примечание" class="form-control col-4 mb-4"/>
+        <input type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" th:field="${revenueRecord.revenueDate}" placeholder="Введите дату транзакции" class="form-control col-4 mb-4"/>
+
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <input type="hidden" th:field="${revenueRecord.id}"/>
+    </form>
+    <hr/>
+    <a th:href="@{/revenues-list}"> назад к списку </a>
+</div>
+
+</body>
+</html>

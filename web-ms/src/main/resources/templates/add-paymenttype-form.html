@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add payment</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+</head>
+
+<div class="container">
+    <br>
+     <h2> <span th:text="${page_name}"> </span> </h2>
+    <hr/>
+
+    <form th:action="@{/payments-list/save-payment-record}" th:object="${paymentRecord}" method="post">
+
+                <div class="placeholder" id="expCat" value="Введите категорию затрат"></div>
+                <div class="placeholder" id="expType" value="Введите тип затрат"></div>
+                <div class="placeholder" id="objType" value="Введите тип объекта"></div>
+                <div class="placeholder" id="object" value="Введите объект"></div>
+
+                <select th:field="${paymentRecord.idExpenseCategory}" class="form-control col-4 mb-4" id = "idExpenseCategory" 
+                   th:onclick="myFunction('idExpenseCategory','idExpenseType','exp-category','expType',0)"> 
+                    <option value=""> Выберите категорию затрат </option>
+                    <option th:each="idExpCat : ${categories}" 
+                        th:value="${idExpCat.id}"
+                        th:text="${idExpCat.name}"
+                        th:selected = "${idExpCat.id==paymentRecord.idExpenseCategory}">
+                    </option>
+                </select>
+
+                <select th:field="${paymentRecord.idExpenseType}" class="form-control col-4 mb-4" id = "idExpenseType"  onclick="myFunction('idExpenseType','idSubjectType','exp-type','objType',0)"  >
+                </select>
+
+                <select th:field="${paymentRecord.idSubjectType}" class="form-control col-4 mb-4" id = "idSubjectType" onclick="myFunction('idSubjectType','idSubject','object-type','object',0)"  >
+                </select>
+
+                <select th:field="${paymentRecord.idSubject}" class="form-control col-4 mb-4" id = "idSubject">
+                </select>
+
+        <input type="text" th:field="${paymentRecord.period}" placeholder="Введите период платежа" class="form-control col-4 mb-4"/>
+        <input type="number" min="0" step="0.01" onfocus="(this.type='number')" onblur="(this.type = 'text')" th:field="${paymentRecord.amount}" placeholder="Введите сумму" class="form-control col-4 mb-4"/>
+        <input type="text" th:field="${paymentRecord.note}" placeholder="Введите примечание" class="form-control col-4 mb-4"/>
+        <input type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" th:field="${paymentRecord.paymentDate}" placeholder="Введите дату оплаты" class="form-control col-4 mb-4"/>
+
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <input type="hidden" th:field="${paymentRecord.id}"/>
+    </form>
+    <hr/>
+    <a th:href="@{/payments-list}"> назад к списку </a>
+</div>
+
+    <script> 
+        function fillDataFunction(id2, id3, id4){
+
+            let dictToggles= new Map();
+            
+            const arr2 = ['idExpenseCategory','idExpenseType','exp-category','expType',id2.toString()];
+            const arr3 = ['idExpenseType','idSubjectType','exp-type','objType',id3.toString()];
+            const arr4 = ['idSubjectType','idSubject','object-type','object',id4.toString()];
+            
+            dictToggles.set(2, arr2); 
+            dictToggles.set(3, arr3); 
+            dictToggles.set(4, arr4); 
+            for (let [key,value] of dictToggles){
+                console.log(key, value);
+                myFunction(value[0], value[1], value[2], value[3], +value[4]);
+            }
+        }
+    </script>
+
+    <script>
+
+        function myFunction(paramId1, paramId2, address, invitation, nextChosenId) {
+                $.ajax({
+                    type: 'GET', 
+                    url: '/add-payment-record/toggle'+ '/'+ address +'/'+$('#'+paramId1).val(),
+                    
+                }).then(function(result) {
+                    var len = result.length;
+                    var dict = {};
+                    let list = document.getElementById(paramId2);
+                    for (var i = 0; i<len; i++ ){
+                        dict[result[i].id] = result[i].name;
+                        /* console.log('result = ', result[i].name); */
+                    }
+                    if (nextChosenId == 0) {
+                    deleteItems('#'+paramId2);
+                    }
+                    var val = document.getElementById(invitation).getAttribute('value');
+                  /* console.log('val == ', val); */
+                    let firstOption = document.createElement('option');
+                    firstOption.value = "";
+                    firstOption.text = val;
+                    list.appendChild(firstOption);
+
+                    for (var key in dict){
+                        let option_ = document.createElement("option");
+                        option_.value = key;
+                        option_.text = dict[key];
+                        if (key==nextChosenId) {
+                            option_.selected = nextChosenId;
+                        }
+                        list.appendChild(option_);
+                    }
+                    console.log('------- ');
+                });
+            }
+        function deleteItems(delItem) {
+            const deleteElement = document.querySelector(delItem);
+            deleteElement.innerHTML = '';
+        }
+    </script>
+    <script>
+        function selectedFunction(selectedId){
+            console.log("selectedId = " + selectedId);
+        }
+    </script>
+
+</body>
+</html>

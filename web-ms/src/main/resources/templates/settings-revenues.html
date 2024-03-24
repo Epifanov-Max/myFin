@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings Revenues</title>
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.0/datatables.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" 
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+<style>
+    .table{
+        border: 3px solid chocolate;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <br>
+    <h2> <span th:text="${page_name}"> </span> </h2>
+    <hr/>
+    <a id="openAdd" th:href="@{/revenue-types/save-revenuetype}" class="btn btn-primary mb-2"> Добавить тип дохода</a>
+   <!-- <button id="openAdd" onclick="showObject()" class="btn btn-primary mb-2"> Добавить тип дохода</button> -->
+   
+   <!-- <div id ="showHide" class="add-revenue_type" style="display: none">
+        <div class="by-object-search">  
+        <form class="formRevenueType" th:action="@{/revenues-types/save-revenuetype}" th:object="${revenueType}" method="post">
+            <input id = "rev-type-name" type="text" th:field="*{name}" placeholder="Название типа дохода"  />
+           
+            <input id = "rev-type-note" type="text" th:field="*{note}" placeholder="Комментарии"  />
+            <button type="submit" id = "save-button" onclick="hideObject()" class="btn btn-warning btn-primary">Сохранить</button>
+            
+        </form>
+  
+        
+
+
+    </div>
+    </div>
+      -->
+    <table class="table table-bordered table-striped" id="project-table" >
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Комментарии</th>
+                    <th>Действия</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="revenueType: ${revenueTypes}">
+                
+                    <td th:text="${revenueType.id}"></td>
+                    <td th:text="${revenueType.name}"></td>
+                    <td th:text="${revenueType.note}"></td>
+                    <td>
+                        <a th:href="@{/revenue-types/updateData(id=${revenueType.id})}" class="btn btn-warning  btn-sm ml-2">Обновить</a>
+                        <a th:href="@{/revenue-types/deleteData(id=${revenueType.id})}" class="btn btn-danger  btn-sm ml-2">Удалить</a>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    
+    <a th:href="@{/main}"> вернуться на главную </a>
+</div>
+<script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script async src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.0/datatables.min.js"></script>
+<script async src="../static/revenue-type-script.js"></script>
+
+</div>   
+</body>
+</html>

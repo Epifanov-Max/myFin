@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings Subjects Expenses</title>
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.0/datatables.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" 
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+<style>
+    .table{
+        border: 3px solid chocolate;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <br>
+    <h2> <span th:text="${page_name}"> </span> </h2>
+    <hr/>
+   <a th:href="@{/subjects/add-subject-form}" class="btn btn-primary mb-2"> Добавить объект затрат</a>
+    
+   
+    <table class="table table-bordered table-striped" id="expense-subjects-settings-table" >
+        <thead> 
+            <tr class="table-head">
+            <th> Типы объектов </th>
+            <th> Объекты </th>
+            <tr>
+        </thead>
+        <tr>
+        <td>
+
+        <table class="table table-bordered table-striped" id="expense-types-table" >
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Название</th>
+                    <th>Комментарии</th>
+          <!--          <th>Действия</th> -->
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="subjType: ${subjectTypes}">
+                
+                    <td th:text="${subjType.id}"></td>
+                    <td th:text="${subjType.name}"></td>
+                    <td th:text="${subjType.comment}"></td>
+                <!--    <td>
+                        <a th:href="@{/subjects/type/updateData(id=${subjType.id})}" class="btn btn-warning  btn-sm ml-2">Обновить</a>
+                        <a th:href="@{/subjects/type/deleteData(id=${subjType.id})}" class="btn btn-danger  btn-sm ml-2">Удалить</a>
+
+                    </td> -->
+                </tr>
+            </tbody>
+        </table>
+
+        </td>
+        <td valign="top">
+            <table class="table table-bordered table-striped" id="categories-table" >
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Название</th>
+                        <th>Адрес</th>
+                        <th>Заметки</th>
+                        <th>Тип объекта</th>
+                        <th>Действия</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="subject: ${subjects}">
+                
+                        <td th:text="${subject.id}"></td>
+                        <td th:text="${subject.name}"></td>
+                        <td th:text="${subject.address}"></td>
+                        <td th:text="${subject.note}"></td>
+                        <td th:text="${subject.subjectType.name}"></td>
+                        <td>
+                            <a th:href="@{/subjects/updateData(id=${subject.id})}" class="btn btn-warning  btn-sm ml-2">Обновить</a>
+                            <a th:href="@{/subjects/deleteData(id=${subject.id})}" class="btn btn-danger  btn-sm ml-2">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>    
+        </tr>
+    </table>
+      
+    <a th:href="@{/}"> вернуться на главную </a>
+    <hr/>
+</div>
+<script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script async src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.0/datatables.min.js"></script>
+    
+
+</div>   
+</body>
+</html>

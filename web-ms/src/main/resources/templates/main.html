@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="../static/mainstyle.css">
+    <script src="https://kit.fontawesome.com/9350d63cd1.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1 style="text-align: center;z-index: -1; ">Получите представление о состоянии Вашего бюджета </h1>
+    <header>
+        <nav>
+            <div class="logo">myFinance</div>
+
+            <div id="header"></div>
+            <ul>
+                <li><a href="#">Доходы <i class="fa-regular fa-square-caret-down"></i></a>
+                    <ul>
+                        <li><a href="/revenues/settings">Настройки типа доходов</a></li>
+                        <li><a href="/revenues-list">Список записей</a></li>
+                    </ul>
+                
+                </li>
+                <li><a href="#">Расходы <i class="fa-regular fa-square-caret-down"></i></a>
+                    <ul>
+                        <li><a href="/expense-types/settings">Настройки типа расходов</a></li>
+                        <li><a href="/subjects/settings">Настройки объектов расходов</a></li>
+                        <li><a href="/payments-list">Список записей</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Баланс <i class="fa-regular fa-square-caret-down"></i></a>
+                    <ul>
+                        <li><a href="/balance-list">Сальдо операций</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Напоминания</a></li>
+                <li><a href="#"><i class="fa-solid fa-coins"></i></a></li>
+            </ul>
+            </div>
+        </nav>
+    </header>
+    
+</body>
+</html> 

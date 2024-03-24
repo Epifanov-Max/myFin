@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All_start" type="CompoundRunConfigurationType">
+    <toRun name="BalanceMsApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ExpensesMsApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="RevenuesMsApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="WebMsApplication" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

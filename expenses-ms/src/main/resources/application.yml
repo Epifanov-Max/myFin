@@ -1,0 +1,13 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: expenses-ms
+  datasource:
+    url: jdbc:mysql://localhost:3377/myFinance
+    username: root
+    password: Akihabar@1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** Класс-сущность объект */
+
 @NoArgsConstructor
 @Data
 @Entity
@@ -14,10 +16,14 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Название объекта */
     @Column(name = "subj_name", nullable = false)
     private String name;
 
+    /** Адрес, необязательное поле */
     private String address;
+
+    /** Примечание  */
     private String note;
 
     /**
@@ -28,5 +34,12 @@ public class Subject {
     @JoinColumn(name="id_type", referencedColumnName = "id", nullable = false)
     private SubjectType subjectType;
 
+    /** конструктор */
+    public Subject(String name, String address, String note, SubjectType subjectType) {
+        this.name = name;
+        this.address = address;
+        this.note = note;
+        this.subjectType = subjectType;
+    }
 }
 

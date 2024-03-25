@@ -18,8 +18,19 @@ public class RevenueRecordService {
     private final RevenueTypeService revenueTypeService;
 
     public List<RevenueRecord> getAllRevenueRecords() {
-        return revRecordRepo.findAll();
+
+        List<RevenueRecord> list = revRecordRepo.findAll();
+        if (list.isEmpty()) {
+            generateInitialDataExamples();
+        }
+        return list;
     }
+
+    /** Генерация примера типов доходов */
+    private void generateInitialDataExamples() {
+        revenueTypeService.generateRevenueTypes();
+    }
+
 
     public RevenueRecord getRevenueRecordById(Long id) {
         Optional<RevenueRecord> optRevenueRecord = revRecordRepo.findById(id);
@@ -49,9 +60,9 @@ public class RevenueRecordService {
         revRecordRepo.deleteById(id);
     }
 
-    public Map<Long, String> recordsStringProcessing(List<RevenueRecord> paymentRecordList) {
+    public Map<Long, String> recordsStringProcessing(List<RevenueRecord> revenueRecordList) {
         Map<Long, String> map = new HashMap<>();
-        for (RevenueRecord revRec : paymentRecordList) {
+        for (RevenueRecord revRec : revenueRecordList) {
             map.put(revRec.getId(), dataToStringMapping(revRec));
         }
         return map;
@@ -62,6 +73,12 @@ public class RevenueRecordService {
         return revenueType.getName();
     }
 
+    /**
+     * Получение суммы доходов за период
+     * @param dateFrom дата начала периоды
+     * @param dateTo дата конца периода
+     * @return
+     */
     public Double summarizeRevenueRecords(LocalDate dateFrom, LocalDate dateTo){
         return revRecordRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
     }

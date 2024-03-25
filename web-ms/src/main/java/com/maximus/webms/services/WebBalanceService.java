@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/** Сервисный класс записей остатков */
 @Slf4j
 @Data
 @Service
@@ -23,19 +24,31 @@ public class WebBalanceService {
     private final WebExpenseService webExpenseService;
     private final WebRevenueService webRevenueService;
 
+    /** Внедрение интерфейса суммы операций для доходов */
     @Autowired
     @Qualifier("RevenueService")
     private SumRecords sumRecordsRevenue;
 
+    /** Внедрение интерфейса суммы операций для расходов */
     @Autowired
     @Qualifier("ExpenseService")
     private SumRecords sumRecordsExpense;
 
+    /** Получить последнюю запись остатка, т.е. ближайшую к запрашиваемой дате */
     public BalanceRecord getLastBalanceRecord(LocalDate checkDate) {
         return webBalanceFeignClient.getLastBalanceRecord(checkDate);
     }
 
+    /**
+     * Получение суммы сальдо операций между заданными датами
+     * @param fromDate дата начала периода
+     * @param checkDate дата конца периода
+     * @return сумма сальдо операций
+     */
     public Double getBalanceOfOperationsBetweenDates(LocalDate fromDate, LocalDate checkDate) {
+        if (checkDate.isBefore(fromDate)) {
+            return 0D;
+        }
         Optional<BalanceRecord> balanceRecord = Optional.ofNullable(getLastBalanceRecord(checkDate));
         if (balanceRecord.isPresent()) {
             //Если существует хотя бы одна запись баланса, то:
@@ -52,28 +65,48 @@ public class WebBalanceService {
             //Если нет записей баланса в базе
             //Добавить в базу первоначальное нулевое значение баланса
             addBalanceRecord(new BalanceRecord(1L, 0D,
-                    "Автоматическое внесение на начало работы программы",
+                    "Автоматическое внесение остатка на начало",
                     LocalDate.parse("1900-01-01"), null));
-            log.info("Автоматическое внесение записи остатка при начале работы");
+            log.info("Автоматическое внесение записи остатка на начало");
         }
         return  getBalanceOfOperationsBetweenDates(fromDate, checkDate);
     }
 
+    /**
+     * Получение суммы доходов за период
+     * @param fromDate дата начала периода
+     * @param checkDate дата конца периода
+     * @return сумма доходов
+     */
     public Double getRevenueSum(LocalDate fromDate, LocalDate checkDate) {
         Optional<Double> sumRevenues = Optional.ofNullable(sumRecordsRevenue.getSumOfRecordsBetweenDates(fromDate, checkDate));
         return sumRevenues.orElse(0D);
 
     }
 
+    /**
+     * Получение суммы расходов за период
+     * @param fromDate дата начала периода
+     * @param checkDate дата конца периода
+     * @return сумма доходов
+     */
     public Double getExpenseSum(LocalDate fromDate, LocalDate checkDate) {
         Optional<Double> sumExpenses = Optional.ofNullable(sumRecordsExpense.getSumOfRecordsBetweenDates(fromDate, checkDate));
         return sumExpenses.orElse(0D);
     }
 
+    /**
+     * Получить все записи остатков
+     * @return список записей остатков
+     */
     public List<BalanceRecord> getAllBalanceRecords() {
         return webBalanceFeignClient.getAllBalanceRecords();
     }
 
+    /**
+     * Добавить запись остатка
+     * @param balanceRecord запись остатка
+     */
     public void addBalanceRecord(BalanceRecord balanceRecord) {
 
         if (balanceRecord.id() == 1L) {
@@ -86,6 +119,7 @@ public class WebBalanceService {
 
     /**
      * Добавление корректировочной записи в расходы или доходы
+     * после нахождения расхождений в вводимых данных и расчетных.
      *
      * @param balanceRecord внесенный пользователем остаток
      */
@@ -126,10 +160,19 @@ public class WebBalanceService {
         }
     }
 
+    /**
+     * Удалить запись остатка по id
+     * @param id id записи остатка
+     */
     public void deleteBalanceRecord(Long id) {
         webBalanceFeignClient.deleteBalanceRecord(id);
     }
 
+    /**
+     * Получить запись остатка по id
+     * @param balanceRecordId id записи остатка
+     * @return  запись остатка
+     */
     public BalanceRecord getBalanceRecordById(Long balanceRecordId) {
         return webBalanceFeignClient.getBalanceRecordById(balanceRecordId);
     }

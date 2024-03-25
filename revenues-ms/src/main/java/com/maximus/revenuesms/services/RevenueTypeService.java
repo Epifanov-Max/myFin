@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class RevenueTypeService {
@@ -15,6 +16,7 @@ public class RevenueTypeService {
     private final RevenueTypeRepository revenueTypeRepo;
 
     public List<RevenueType> getAllRevenueTypes(){
+
         return revenueTypeRepo.findAll();
     }
 
@@ -49,5 +51,12 @@ public class RevenueTypeService {
     }
 
 
-
+    public void generateRevenueTypes() {
+        if (revenueTypeRepo.findAll().isEmpty()){
+            addRevenueType(new RevenueType("Неопределено", "доход не определен"));
+            addRevenueType(new RevenueType("Зарплата", ""));
+            addRevenueType(new RevenueType("Сдача в аренду", "доходы от сдачи в аренду"));
+            addRevenueType(new RevenueType("Денежные вознаграждения", "денежные подарки"));
+        }
+    }
 }

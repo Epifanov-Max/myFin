@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Веб-контроллер записей доходов */
 @Data
 @RequiredArgsConstructor
 @Controller
@@ -23,6 +24,7 @@ public class WebRevenueController {
 
     private final WebRevenueService webRevenueServiceMain;
 
+    /** Передача формы представления списка доходов */
     @GetMapping("/revenues-list")
     public ModelAndView showData() {
         ModelAndView mav = new ModelAndView("revenues-list");
@@ -30,18 +32,16 @@ public class WebRevenueController {
         mav.addObject("revenues", listRevenues);
         Map<Long, String> map = new HashMap<>(webRevenueServiceMain.mapPaymentStringRecords());
         mav.addObject("stringValue", map);
-
-//        String resultSum = sumOfRevenues(getListOfPaymentRecordsIds(paymentRecordsService.getAllPaymentRecords()));
-        String resultSum = "1000";
-        mav.addObject("sum", resultSum);
         return mav;
     }
 
+    /** Получение списка типов доходов */
     @GetMapping("/revenues-list/revenue-types")
     public ResponseEntity<List<RevenueType>> getAllRevenueTypes() {
         return new ResponseEntity<>(webRevenueServiceMain.getAllRevenueTypes(), HttpStatus.OK);
     }
 
+    /** Передача формы представления добавления записи дохода */
     @GetMapping("/add-revenue-record")
     public ModelAndView addRevenueRecordForm() {
         ModelAndView mav = new ModelAndView("add-revenue-form");
@@ -54,6 +54,7 @@ public class WebRevenueController {
         return mav;
     }
 
+    /** Передача данных для сохранение новой записи доходов и возврат на страницу списка доходов*/
     @PostMapping(path = "/revenues-list/save-revenue-record")
     public String addRevenueRecord(RevenueRecord revenueRecord) {
         webRevenueServiceMain.addRevenueRecord(revenueRecord);
@@ -66,7 +67,7 @@ public class WebRevenueController {
         return "redirect:/revenues-list";
     }
 
-    //TODO UPDATES
+    /** Передача формы представления обновления записи дохода на базе формы добавления записи дохода  */
     @GetMapping("/revenues-list/updateData")
     public ModelAndView updateDataForm(@RequestParam("id") Long revenueRecordId) {
         ModelAndView mav = new ModelAndView("add-revenue-form");
@@ -76,12 +77,10 @@ public class WebRevenueController {
         mav.addObject("page_name", page_name);
         mav.addObject("revenueRecord", updRecord);
         mav.addObject("revenueTypes", listRevenueType);
-
-//        fileGateway.writeToFile("project_table_actions.txt", "Данные проекта с id='" + projectId + "' обновлены в " +
-//                LocalDateTime.now());
         return mav;
     }
 
+    /** Передача формы представления списка типов доходов */
     @GetMapping("/revenues/settings")
     public ModelAndView showSettingsRevenues() {
         ModelAndView mav = new ModelAndView("settings-revenues");
@@ -94,6 +93,7 @@ public class WebRevenueController {
         return mav;
     }
 
+    /** Передача формы представления добавления списка типов доходов */
     @GetMapping("/revenue-types/save-revenuetype")
     public ModelAndView showRevenueTypesForm() {
         ModelAndView mav = new ModelAndView("add-revenuetype-form");
@@ -104,13 +104,14 @@ public class WebRevenueController {
         return mav;
     }
 
-
+    /** Передача данных для сохранения нового типа доходов и возврат на страницу списка типов доходов */
     @PostMapping(path = "/revenue-types/save-revenuetype")
     public String addRevenueType( RevenueType revenueType) {
         webRevenueServiceMain.addRevenueType(revenueType);
         return "redirect:/revenues/settings";
     }
 
+    /** Передача формы представления обновления типов доходов на базе формы добавления типа доходов  */
     @GetMapping("/revenue-types/updateData")
     public ModelAndView updateRevenueDataForm(@RequestParam("id") Long revenueTypeId) {
         ModelAndView mav = new ModelAndView("add-revenuetype-form");
@@ -118,9 +119,6 @@ public class WebRevenueController {
         String page_name = "Обновить данные по записи";
         mav.addObject("page_name", page_name);
         mav.addObject("revenueType", updRevenueType);
-
-//        fileGateway.writeToFile("project_table_actions.txt", "Данные проекта с id='" + projectId + "' обновлены в " +
-//                LocalDateTime.now());
         return mav;
     }
 

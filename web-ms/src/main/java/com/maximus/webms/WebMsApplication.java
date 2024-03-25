@@ -14,10 +14,6 @@ public class WebMsApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(WebMsApplication.class, args);
-//        ApplicationContext context =
-//                new AnnotationConfigApplicationContext("com.maximus.webms");
-//
-//        WebBalanceService webBalanceService = context.getBean(WebBalanceService.class);
-    }
+   }
 
 }

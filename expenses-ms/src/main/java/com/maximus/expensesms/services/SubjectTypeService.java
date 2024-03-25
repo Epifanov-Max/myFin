@@ -1,5 +1,6 @@
 package com.maximus.expensesms.services;
 
+import com.maximus.expensesms.models.ExpenseCategory;
 import com.maximus.expensesms.models.SubjectType;
 import com.maximus.expensesms.repositories.SubjectTypeRepo;
 import lombok.RequiredArgsConstructor;
@@ -60,4 +61,26 @@ public class SubjectTypeService {
     public void deleteSubjectType(Long id) {
         subjectTypeRepo.deleteById(id);
     }
+
+    /** Поиск типа объекта по названию */
+    public SubjectType getSubjectTypeByName(String subjectTypeName){
+        return subjectTypeRepo.findAll().stream()
+                .filter(subjType -> subjType.getName().equals(subjectTypeName)).findFirst().orElse(new SubjectType());
+    }
+
+
+    /**
+     * Генерация Типов объектов при первом запуске приложения, hardcode
+     */
+    public void generateSubjectTypes() {
+        if(subjectTypeRepo.findAll().isEmpty()){
+
+            addSubjectType(new SubjectType("Прочее","не определен"));
+            addSubjectType(new SubjectType("Автомобиль","Легковой автомобиль"));
+            addSubjectType(new SubjectType("Физ.лицо","Любой человек"));
+            addSubjectType(new SubjectType("Объект недвижимости",""));
+        }
+    }
+
+
 }

@@ -21,15 +21,35 @@ public class PaymentRecordsService {
     private final ExpenseTypeService expenseTypeService;
     private final SubjectTypeService subjectTypeService;
     private final SubjectService subjectService;
+    private final InteractionService interactionService;
+
 
     public List<PaymentRecord> getAllPaymentRecords() {
-        return paymentsRepo.findAll();
+        List<PaymentRecord> list = paymentsRepo.findAll();
+        if (list.isEmpty()) {
+            generateInitialDataExamples();
+        }
+        return list;
     }
 
-    public String summarizeRecords(List<Long> listOfRecordsIds) {
-        Double sum = listOfRecordsIds.stream().map(id -> getRecordById(id).getAmount()).reduce(0.0, Double::sum);
-        return String.format("%.2f", sum);
+    public void generateInitialDataExamples() {
+        expenseTypeService.generateExpenseCategories();
+        expenseTypeService.generateExpenseTypes();
+        subjectTypeService.generateSubjectTypes();
+        subjectService.generateSubjects();
+
+        interactionService.addExpenseTypeToSubjectTypeByNames("Неопределено", "Прочее");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Оплата ЖКХ", "Объект недвижимости");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Страхование", "Объект недвижимости");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Страхование", "Автомобиль");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Страхование", "Физ.лицо");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Покупка продуктов", "Физ.лицо");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Покупка мебели", "Объект недвижимости");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Покупка мебели", "Физ.лицо");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Выплаты по кредитам", "Объект недвижимости");
+        interactionService.addExpenseTypeToSubjectTypeByNames("Выплаты по кредитам", "Автомобиль");
     }
+
 
     public PaymentRecord getRecordById(Long id) {
         Optional<PaymentRecord> optPaymentRecord = paymentsRepo.findById(id);
@@ -51,6 +71,7 @@ public class PaymentRecordsService {
     /**
      * Получение списка названий сущностей по их id:
      * - категория расхода, тип Расхода, тип объекта, объект
+     *
      * @param paymentRecord запись расходов
      * @return список строковых значений
      */
@@ -117,11 +138,12 @@ public class PaymentRecordsService {
 
     /**
      * Получение суммы расходов между датами
+     *
      * @param dateFrom дата начала периода
-     * @param dateTo дата конца периода
+     * @param dateTo   дата конца периода
      * @return сумма расходов
      */
-    public Double summarizeAllPaymentRecords(LocalDate dateFrom, LocalDate dateTo){
-      return paymentsRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
+    public Double summarizeAllPaymentRecords(LocalDate dateFrom, LocalDate dateTo) {
+        return paymentsRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
     }
 }

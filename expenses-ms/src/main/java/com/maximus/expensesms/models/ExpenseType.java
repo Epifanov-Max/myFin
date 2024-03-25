@@ -2,6 +2,7 @@ package com.maximus.expensesms.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @Entity
@@ -19,6 +21,7 @@ public class ExpenseType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Название типа расходов */
     @Column(name="type_name",nullable = false)
     private String name;
 
@@ -52,5 +55,11 @@ public class ExpenseType {
     public void addSubjectType(SubjectType subjectType){
         subjectTypes.add(subjectType);
         subjectType.getExpenseTypes().add(this);
+    }
+
+    /** конструктор с 2-мя аргументами */
+    public ExpenseType(String name, ExpenseCategory expenseCategory) {
+        this.name = name;
+        this.expenseCategory = expenseCategory;
     }
 }

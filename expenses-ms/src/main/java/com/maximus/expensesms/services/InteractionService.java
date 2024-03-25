@@ -21,6 +21,9 @@ public class InteractionService {
     private final SubjectTypeRepo subjectTypeRepo;
     private final SubjectRepo subjectRepo;
 
+    private final SubjectTypeService subjectTypeService;
+    private final ExpenseTypeService expenseTypeService;
+
     /**
      *Поиск видов расходов по типу объектов
      * @param subjectTypeId
@@ -33,10 +36,10 @@ public class InteractionService {
     }
 
     /**
-     * Добавление типа объектов к типу расходов по их id
+     * Добавление типу расходов к типу объектов по их id
      *
      */
-    public SubjectType addSubjectTypeToExpenseType(Long expenseTypeId, SubjectType subjectType) {
+    public SubjectType addExpenseTypeToSubjectType(Long expenseTypeId, SubjectType subjectType) {
         SubjectType resultSubjType = expenseTypeRepo.findById(expenseTypeId)
                 .map(expType -> {
                     Long subjTypeId = subjectType.getId();
@@ -56,6 +59,15 @@ public class InteractionService {
                 .orElseThrow(() -> new RuntimeException("Не найден тип расходов с id = " + expenseTypeId));
         return resultSubjType;
     }
+
+    /**
+     * Добавление типу расходов к типу объектов по их названиям
+     */
+     public void addExpenseTypeToSubjectTypeByNames(String expenseTypeName, String subjectTypeName){
+         addExpenseTypeToSubjectType(expenseTypeService.getExpenseTypeByName(expenseTypeName).getId(),
+        subjectTypeService.getSubjectTypeByName(subjectTypeName));
+     }
+
 
     /**
      * Получение списка типов объектов по типу расходов

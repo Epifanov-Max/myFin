@@ -1,7 +1,10 @@
 package com.maximus.expensesms.services;
 
+import com.maximus.expensesms.models.ExpenseCategory;
 import com.maximus.expensesms.models.Subject;
+import com.maximus.expensesms.repositories.ExpenseTypeRepo;
 import com.maximus.expensesms.repositories.SubjectRepo;
+import com.maximus.expensesms.repositories.SubjectTypeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class SubjectService {
 
     private final SubjectRepo subjectRepo;
+    private final SubjectTypeService subjectTypeService;
 
 
     /**
@@ -73,5 +77,15 @@ public class SubjectService {
      */
     public List<Subject> getSubjectsBySubjectTypeId(Long subjectTypeId){
         return subjectRepo.getSubjectsBySubjectTypeId(subjectTypeId);
+    }
+
+    public void generateSubjects() {
+        if(subjectRepo.findAll().isEmpty()){
+            addSubject(new Subject("Прочее","","",subjectTypeService.getSubjectTypeByName("Прочее")));
+            addSubject(new Subject("Родной брат","","Брат",subjectTypeService.getSubjectTypeByName("Физ.лицо")));
+            addSubject(new Subject("Машина","","Toyota Crown",subjectTypeService.getSubjectTypeByName("Автомобиль")));
+            addSubject(new Subject("Квартира","г.Павлово","Собственность",subjectTypeService.getSubjectTypeByName("Объект недвижимости")));
+
+        }
     }
 }

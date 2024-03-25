@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+/** Веб сервисный класс расходов  */
 @Slf4j
 @RequiredArgsConstructor
 @Service("ExpenseService")
@@ -69,6 +70,8 @@ public class WebExpenseService implements SumRecords{
     public ExpenseRecord getExpenseRecordById(Long paymentRecordId) {
         return webExpenseFeignClient.getExpenseRecordById(paymentRecordId);
     }
+
+    @Override
     public Double getSumOfRecordsBetweenDates(LocalDate fromDate, LocalDate toDate){
         log.info("отправка запроса на расчет суммы расходов на модуль expenses-ms");
         return webExpenseFeignClient.summarizePaymentRecords(fromDate, toDate);

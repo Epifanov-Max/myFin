@@ -40,8 +40,13 @@ public class PaymentRecord {
     @Column(name = "id_subject", nullable = false)
     private Long idSubject;
 
+    /** период за который производится оплата */
     private String period;
+
+    /** сумма оплаты */
     private Double amount;
+
+    /** примечание */
     private String note;
 
     /**

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.util.List;
 
+/** Веб-контроллер записей остатков */
 @Slf4j
 @Data
 @RequiredArgsConstructor
@@ -29,6 +30,13 @@ public class WebBalanceController {
     @Autowired
     private final WebBalanceService webBalanceService;
 
+    /** Передача формы представления главной страницы */
+    @GetMapping("/main")
+    public String showMain() {
+        return "main.html";
+    }
+
+    /** Передача формы представления списка остатков */
     @GetMapping("/balance-list")
     public String showData(Model model) {
         List<BalanceRecord> listBalanceRecords = webBalanceService.getAllBalanceRecords();
@@ -37,14 +45,16 @@ public class WebBalanceController {
         return "balance-list";
     }
 
+    /** Получение суммы сальдо операций между датами */
     @GetMapping("/balance-list/betweenDates")
     public ResponseEntity<Double> balanceByTransactionsBetweenDates(@RequestParam("fromDate") LocalDate fromDate,
                                                                     @RequestParam("checkDate") LocalDate checkDate) {
+        log.info("Запрос по сальдо операций между датами");
         Double result = webBalanceService.getBalanceOfOperationsBetweenDates(fromDate, checkDate);
-        log.info("Ответ по остатку между датами получен");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /** Передача формы представления добавления нового остатка */
     @GetMapping("/balance-list/add-balance-record")
     public ModelAndView addBalanceRecordForm() {
         ModelAndView mav = new ModelAndView("add-balance-form");
@@ -56,6 +66,8 @@ public class WebBalanceController {
         log.info("Показана форма добавления остатка");
         return mav;
     }
+
+    /** Передача данных для сохранение нового остатка и возврат на страницу списка остатков*/
     @PostMapping(path = "/balance-list/save-balance-record")
     public String addBalanceRecord(BalanceRecord balanceRecord) {
         webBalanceService.addBalanceRecord(balanceRecord);
@@ -64,6 +76,7 @@ public class WebBalanceController {
         return "redirect:/balance-list";
     }
 
+    /** Передача формы представления обновления остатка на базе формы добавления остатка  */
     @GetMapping("/balance-list/updateData")
     public ModelAndView updateDataForm(@RequestParam("id") Long balanceRecordId) {
         ModelAndView mav = new ModelAndView("add-balance-form");
@@ -76,6 +89,8 @@ public class WebBalanceController {
         log.info("Показана форма обновления записи остатка");
         return mav;
     }
+
+    /** Передача данных для удаления записи остатк и возврат на страницу списка остатков*/
     @GetMapping("/balance-list/deleteData")
     public String deleteBalanceRecord(@RequestParam("id") Long id){
         webBalanceService.deleteBalanceRecord(id);

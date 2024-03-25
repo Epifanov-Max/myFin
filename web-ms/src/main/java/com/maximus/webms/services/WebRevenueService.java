@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+/** Веб-сервисный класс доходов */
 @Slf4j
 @RequiredArgsConstructor
 @Service("RevenueService")
@@ -32,6 +33,7 @@ public class WebRevenueService implements SumRecords{
     public void addRevenueRecord(RevenueRecord revenueRecord) {
         webRevenueFeignClient.addRevenueRecord(revenueRecord);
     }
+
     public List<RevenueType> getAllRevenueTypes(){
         return webRevenueFeignClient.getAllRevenueTypes();
     }
@@ -40,6 +42,7 @@ public class WebRevenueService implements SumRecords{
         webRevenueFeignClient.deleteRevenueRecord(id);
     }
 
+    @Override
     public Double getSumOfRecordsBetweenDates(LocalDate fromDate, LocalDate toDate){
         log.info("отправка запроса на расчет суммы доходов на модуль revenues-ms");
         return webRevenueFeignClient.summarizeRevenueRecords(fromDate, toDate);

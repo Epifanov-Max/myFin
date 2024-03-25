@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/** класс-сущность тип объектов */
 @NoArgsConstructor
 @Setter
 @Getter
@@ -19,9 +21,11 @@ public class SubjectType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** название типа объектов */
     @Column(name = "type_name", nullable = false)
     private String name;
 
+    /** Примечание */
     private String comment;
 
     /**
@@ -38,4 +42,9 @@ public class SubjectType {
             inverseJoinColumns = {@JoinColumn(name = "id_expense_type")})
     private Set<ExpenseType> expenseTypes = new HashSet<>();
 
+    /** конструктор с 2-мя аргументами */
+    public SubjectType(String name, String comment) {
+        this.name = name;
+        this.comment = comment;
+    }
 }

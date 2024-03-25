@@ -64,6 +64,15 @@ public class ExpenseTypeService {
         return null;
     }
 
+    public ExpenseCategory addExpenseCategory(ExpenseCategory expenseCategory) {
+
+        if (expenseCategoryRepo.findAll().stream()
+                .noneMatch(item -> item.getName().equals(expenseCategory.getName()))) {
+            return expenseCategoryRepo.save(expenseCategory);
+        }
+        return null;
+    }
+
     /**
      * Изменение данных типа расходов
      *
@@ -102,4 +111,50 @@ public class ExpenseTypeService {
     public List<ExpenseType> getExpenseTypesByCategoryId(Long categoryId) {
         return expenseTypeRepo.getExpenseTypesByExpenseCategoryId(categoryId);
     }
+
+    public ExpenseCategory getExpenseCategoryById(Long categoryId){
+        return expenseCategoryRepo.getReferenceById(categoryId);
+    }
+
+    /**
+     * Генерация категорий объектов при первом запуске приложения
+     */
+    public void generateExpenseCategories() {
+        if (expenseCategoryRepo.findAll().isEmpty()) {
+
+            addExpenseCategory(new ExpenseCategory("Неопределена", "Используется также программой при корректировке записей"));
+            addExpenseCategory(new ExpenseCategory("Покупки", "Приобретение товаров и объектов"));
+            addExpenseCategory(new ExpenseCategory("Услуги", "Оплата услуг"));
+        }
+
+    }
+    /** Поиск категории затрат по ее названию */
+    private ExpenseCategory getExpenseCategoryByName(String categoryName){
+        return expenseCategoryRepo.findAll().stream()
+                        .filter(expCat -> expCat.getName().equals(categoryName)).findFirst().orElse(new ExpenseCategory());
+            }
+
+
+    public ExpenseType getExpenseTypeByName(String expenseTypeName){
+        return expenseTypeRepo.findAll().stream()
+                .filter(expType -> expType.getName().equals(expenseTypeName)).findFirst().orElse(new ExpenseType());
+    }
+
+    /**
+     * Генерация типов затрат при первом запуске приложения
+     */
+    public void generateExpenseTypes() {
+        if(expenseTypeRepo.findAll().isEmpty()){
+
+            addExpenseType(new ExpenseType("Неопределено",getExpenseCategoryByName("Неопределена") ));
+            addExpenseType(new ExpenseType("Оплата ЖКХ",getExpenseCategoryByName("Услуги") ));
+            addExpenseType(new ExpenseType("Страхование",getExpenseCategoryByName("Услуги") ));
+            addExpenseType(new ExpenseType("Покупка продуктов",getExpenseCategoryByName("Покупки") ));
+            addExpenseType(new ExpenseType("Покупка мебели",getExpenseCategoryByName("Покупки") ));
+            addExpenseType(new ExpenseType("Выплаты по кредитам",getExpenseCategoryByName("Услуги") ));
+        }
+    }
+
+
+
 }

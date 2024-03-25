@@ -29,20 +29,21 @@ public class WebBalanceServiceTest {
 
 
 
-    @Mock
-    WebBalanceFeignClient feignClient;
+//    @Mock
+//    WebBalanceFeignClient feignClient;
 //
 //    @Mock
 //    WebRevenueFeignClient webRevenueFeignClient;
-//
+
 //    @Mock
 //    WebExpenseFeignClient webExpenseFeignClient;
-//
+
+
 //    @Autowired
-    WebRevenueService webRevenueService;
-//
+//    WebRevenueService webRevenueService;
+
 //    @Autowired
-    WebExpenseService webExpenseService;
+//    WebExpenseService webExpenseService;
 
 
     @Mock
@@ -52,9 +53,7 @@ public class WebBalanceServiceTest {
     @Mock
     @Qualifier("ExpenseService")
     SumRecords sumRecordsExpense;
-//    @Autowired
 
-//    @Autowired
     @InjectMocks
     private WebBalanceService service;
 
@@ -92,27 +91,24 @@ public class WebBalanceServiceTest {
 ////        verify(feignClient,times(2)).getLastBalanceRecord(newCheckDate);
 ////        verify(sumRecordsRevenue).getSumOfRecordsBetweenDates(newFromDate, newCheckDate);
 //        assertEquals(20000.00, result);
-//
-//
-//
-//
 //    }
 
     @Test
-    void getRevenueSumTest() {
-
+    void getRevenueAndExpenseSumTest() {
         when(sumRecordsRevenue.getSumOfRecordsBetweenDates(newFromDate, newCheckDate)).thenReturn(50000.00);
-        given(sumRecordsExpense.getSumOfRecordsBetweenDates(newFromDate, newCheckDate)).willReturn(30000D);
 
         Double  resRevenue= service.getRevenueSum(newFromDate, newCheckDate);
-        Double  resExpense= service.getExpenseSum(newFromDate, newCheckDate);
 
         assertEquals(50000.00, resRevenue );
-        assertEquals(30000.00, resExpense );
     }
 
     @Test
     void getExpenseSumTest() {
+        given(sumRecordsExpense.getSumOfRecordsBetweenDates(newFromDate, newCheckDate)).willReturn(30000D);
+
+        Double  resExpense= service.getExpenseSum(newFromDate, newCheckDate);
+
+        assertEquals(30000.00, resExpense );
     }
 
     @Test

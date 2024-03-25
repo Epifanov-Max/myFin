@@ -79,8 +79,8 @@ public class ExpenseTypeController {
      * @return добавленный тип объектов
      */
     @PostMapping("/{id}/subject-types")
-    public SubjectType addSubjectTypeToExpenseType(@PathVariable("id") Long expenseTypeId, @RequestBody SubjectType subjectType){
-        return interactionService.addSubjectTypeToExpenseType(expenseTypeId, subjectType);
+    public SubjectType addExpenseTypeToSubjectType(@PathVariable("id") Long expenseTypeId, @RequestBody SubjectType subjectType){
+        return interactionService.addExpenseTypeToSubjectType(expenseTypeId, subjectType);
     }
 
     /**

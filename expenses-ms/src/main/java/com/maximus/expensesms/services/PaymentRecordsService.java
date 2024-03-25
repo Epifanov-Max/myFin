@@ -36,17 +36,24 @@ public class PaymentRecordsService {
         return optPaymentRecord.orElse(null);
     }
 
-    //    public Map<Long, >
+    /**
+     * Добавление новой записи расходов
+     */
     public PaymentRecord addPaymentRecord(PaymentRecord paymentRecord) {
         if (paymentRecord.getInputTime() == null) {
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//        paymentRecord.setTime(new Date());
             paymentRecord.setInputTime(new Date(System.currentTimeMillis()));
         }
         return paymentsRepo.save(paymentRecord);
     }
 
     //region Вспомогательные методы по сбору данных в строку и сумма
+
+    /**
+     * Получение списка названий сущностей по их id:
+     * - категория расхода, тип Расхода, тип объекта, объект
+     * @param paymentRecord запись расходов
+     * @return список строковых значений
+     */
     public List<String> dataToStringMapping(PaymentRecord paymentRecord) {
 
 
@@ -72,16 +79,19 @@ public class PaymentRecordsService {
         }
         return map;
     }
-
-
     //endregion
 
-
+    /**
+     * Получение записи расходов по id
+     */
     public PaymentRecord getPaymentRecordById(Long id) {
         Optional<PaymentRecord> optPaymentRecord = paymentsRepo.findById(id);
         return optPaymentRecord.orElse(null);
     }
 
+    /**
+     * Обновление записи расходов по id и получаемой записи расходов
+     */
     public PaymentRecord updatePaymentRecord(Long id, PaymentRecord paymentRecordDetails) {
         Optional<PaymentRecord> optionalRecord = paymentsRepo.findById(id);
         if (optionalRecord.isPresent()) {
@@ -105,6 +115,12 @@ public class PaymentRecordsService {
         paymentsRepo.deleteById(id);
     }
 
+    /**
+     * Получение суммы расходов между датами
+     * @param dateFrom дата начала периода
+     * @param dateTo дата конца периода
+     * @return сумма расходов
+     */
     public Double summarizeAllPaymentRecords(LocalDate dateFrom, LocalDate dateTo){
       return paymentsRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
     }

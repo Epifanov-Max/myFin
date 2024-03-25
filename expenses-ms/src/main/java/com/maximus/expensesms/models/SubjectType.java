@@ -13,26 +13,29 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name="subject_type")
+@Table(name = "subject_type")
 public class SubjectType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="type_name", nullable = false)
+    @Column(name = "type_name", nullable = false)
     private String name;
 
     private String comment;
 
+    /**
+     * Множество типов расходов сопоставляемое типам объектов
+     * тип связи многие-ко-многим
+     */
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "subject_expense",
-            joinColumns = { @JoinColumn(name = "id_subject_type") },
-            inverseJoinColumns = { @JoinColumn(name = "id_expense_type") })
-//    @JsonIgnore
+    @JoinTable(name = "subject_expense",  //таблица в БД соответствия id типов объектов и id типов расходов
+            joinColumns = {@JoinColumn(name = "id_subject_type")},
+            inverseJoinColumns = {@JoinColumn(name = "id_expense_type")})
     private Set<ExpenseType> expenseTypes = new HashSet<>();
 
 }

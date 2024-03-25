@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+/** Класс контроллер записей расходов */
 @Data
 @RequiredArgsConstructor
 @RestController
@@ -29,6 +30,12 @@ public class PaymentRecordsController {
         return paymentRecordsService.getAllPaymentRecords();
     }
 
+    /**
+     * Получение суммы расходов между датами по Get-запросу на эндпоинт "/payments/summarize"
+     * @param fromDate дата начала периода
+     * @param toDate дата конца периода
+     * @return сумма расходов
+     */
     @GetMapping("/summarize")
     public Double summarizeAllPaymentRecords(@RequestParam("fromDate") LocalDate fromDate, @RequestParam("toDate") LocalDate toDate){
         return paymentRecordsService.summarizeAllPaymentRecords(fromDate, toDate);
@@ -50,8 +57,7 @@ public class PaymentRecordsController {
     }
 
     /**
-     * Удаление записи по DELETE-запросу
-     *      * с эндпоинта "/expenseTypes/{id}
+     * Удаление записи по DELETE-запросу на эндпоинт "/payments/{id}
      * @param id идентификатор пользователя
      */
     @DeleteMapping("/{id}")
@@ -60,22 +66,35 @@ public class PaymentRecordsController {
     }
 
 
+    /**
+     * Получение словаря с ключами в виде id поля записи расходов и значениями в виде названий этих полей
+     * @return словарь
+     */
     @GetMapping("/string-mapping")
     public Map<Long, List<String>> mapPaymentStringRecords(){
         return paymentRecordsService.recordsStringProcessing(paymentRecordsService.getAllPaymentRecords());
 
     }
 
+    /**
+     * Получение списка типов расходов по id категории расходов
+     */
     @GetMapping("/toggle/exp-category/{id}")
     public List<ExpenseType> getExpenseTypesByExpCatId(@PathVariable("id") Long expenseCategoryId) {
         return expenseTypeService.getExpenseTypesByCategoryId(expenseCategoryId);
     }
 
+    /**
+     * Получение списка типов объектов по id типа расходов
+     */
     @GetMapping("/toggle/exp-type/{id}")
     public List<SubjectType> getSubjectTypesByExpTypeId(@PathVariable("id") Long expenseTypeId) {
         return interactionService.getSubjectTypesByExpenseTypeId(expenseTypeId);
     }
 
+    /**
+     * Получение списка объектов по id типа объектов
+     */
     @GetMapping("/toggle/object-type/{id}")
     public List<Subject> getSubjectBySubjectTypeId(@PathVariable("id") Long subjectTypeId) {
         return interactionService.getSubjectBySubjectTypeId(subjectTypeId);

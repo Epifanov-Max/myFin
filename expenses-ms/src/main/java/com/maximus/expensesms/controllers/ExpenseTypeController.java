@@ -13,22 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Класс контроллер пользователей
+ * Класс контроллер типов расходов
  */
-
 @Data
 @RestController
 @RequestMapping("/expense-types")
-//@RequiredArgsConstructor
 public class ExpenseTypeController {
 
     private final ExpenseTypeService expenseTypeService;
     private final InteractionService interactionService;
 
     /**
-     * Получение списка всех пользователей по Get-запросу с эндпоинта "/expenseTypes"
-     *
-     * @return список всех пользователей
+     * Получение списка всех типов расходов по Get-запросу на эндпоинт "/expenseTypes"
      */
     @GetMapping
     public List<ExpenseType> getAllExpenseTypes(){
@@ -37,9 +33,7 @@ public class ExpenseTypeController {
 
 
     /**
-     * Получение пользователя по ID по Get-запросу c эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @return запрашиваемый пользователь
+     * Получение типа расходов по ID по Get-запросу на эндпоинт "/expenseTypes/id"
      */
     @GetMapping("/{id}")
     public ExpenseType getExpenseTypeById(@PathVariable("id") Long id){
@@ -47,9 +41,9 @@ public class ExpenseTypeController {
     }
 
     /**
-     * Добавление нового пользователя из тела Post-запроса с эндпоинта "/expenseTypes"
-     * @param expenseType новый пользователь
-     * @return добавленный пользователь
+     * Добавление нового типа расходов из тела Post-запроса на эндпоинт "/expenseTypes"
+     * @param expenseType новый тип расходов
+     * @return добавленный тип расходов
      */
     @PostMapping
     public ExpenseType addExpenseType(@RequestBody ExpenseType expenseType){
@@ -57,11 +51,11 @@ public class ExpenseTypeController {
     }
 
     /**
-     * Изменение данных пользователя из тела Put-запроса
-     * с эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @param expenseType пользователь с обновленными данными
-     * @return обновленный пользователь
+     * Изменение данных типа расходов из тела Put-запроса
+     * на эндпоинт "/expenseTypes/id"
+     * @param id идентификатор типа расходов
+     * @param expenseType тип расходов с обновленными данными
+     * @return обновленный типа расходов
      */
     @PutMapping("/{id}")
     public ExpenseType updateExpenseType(@PathVariable Long id, @RequestBody ExpenseType expenseType){
@@ -69,22 +63,28 @@ public class ExpenseTypeController {
     }
 
     /**
-     * Удаление пользователя по DELETE-запросу
-     *      * с эндпоинта "/expenseTypes/{id}
-     * @param id идентификатор пользователя
+     * Удаление типа рсаходов по DELETE-запросу
+     *      * на эндпоинт "/expenseTypes/{id}
+     * @param id идентификатор типа расходов
      */
     @DeleteMapping("/{id}")
     public void deleteExpenseType(@PathVariable Long id){
         expenseTypeService.deleteExpenseType(id);
     }
 
+    /**
+     * Добавление типа объектов к типу расходов
+     * @param expenseTypeId id типа расходов
+     * @param subjectType id типа объектов
+     * @return добавленный тип объектов
+     */
     @PostMapping("/{id}/subject-types")
     public SubjectType addSubjectTypeToExpenseType(@PathVariable("id") Long expenseTypeId, @RequestBody SubjectType subjectType){
         return interactionService.addSubjectTypeToExpenseType(expenseTypeId, subjectType);
     }
 
     /**
-     * Показать типы объектов при заданном id типа расходов
+     * Получить типы объектов при заданном id типа расходов
      * @param expenseTypeId
      * @return
      */
@@ -93,11 +93,17 @@ public class ExpenseTypeController {
         return interactionService.getSubjectTypesByExpenseTypeId(expenseTypeId);
     }
 
+    /**
+     * Получить список объектов по id типа расходов
+     */
     @GetMapping("/{id}/subjects")
     public List<Subject> getSubjectsByExpenseTypeId(@PathVariable("id") Long expenseTypeId){
         return interactionService.getSubjectsByExpenseTypeId(expenseTypeId);
     }
 
+    /**
+     * Получить список категорий расходов
+     */
     @GetMapping("/categories")
     public List<ExpenseCategory> getAllExpenseCategories(){
         return expenseTypeService.getAllExpenseCategories();

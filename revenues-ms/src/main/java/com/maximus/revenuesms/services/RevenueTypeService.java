@@ -38,8 +38,6 @@ public class RevenueTypeService {
             RevenueType revenueType = optionalRevenueType.get();
             revenueType.setName(revenueTypeDetails.getName());
             revenueType.setNote((revenueType.getNote()));
-//
-//            revenueType.setIdExp(revenueTypeDetails.getIdExp());
             return revenueTypeRepo.save(revenueType);
         } else {
             throw new IllegalArgumentException("Тип доходов с id" + id + "не найден");

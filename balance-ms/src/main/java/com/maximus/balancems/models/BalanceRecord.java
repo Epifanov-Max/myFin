@@ -9,6 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Класс - сущность запись остатка
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -20,13 +23,26 @@ public class BalanceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Сумма
+     */
     private Double amount;
+
+    /**
+     * Заметка
+     */
     private String note;
 
+    /**
+     * Дата транзакции
+     */
     @Column(name = "transaction_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate balanceDate;
 
+    /**
+     * дата внесения записи о транзакции
+     */
     @Column(name = "input_time")
     private Date inputTime;
 }

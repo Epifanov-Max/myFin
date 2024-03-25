@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/balance-ms/balance-ms.iml" filepath="$PROJECT_DIR$/balance-ms/balance-ms.iml" />
       <module fileurl="file://$PROJECT_DIR$/expenses-ms/expenses-ms.iml" filepath="$PROJECT_DIR$/expenses-ms/expenses-ms.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myFinance.iml" filepath="$PROJECT_DIR$/myFinance.iml" />
       <module fileurl="file://$PROJECT_DIR$/revenues-ms/revenues-ms.iml" filepath="$PROJECT_DIR$/revenues-ms/revenues-ms.iml" />
     </modules>
   </component>

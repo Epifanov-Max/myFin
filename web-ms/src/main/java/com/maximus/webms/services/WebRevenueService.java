@@ -3,6 +3,7 @@ package com.maximus.webms.services;
 import com.maximus.webms.feignclients.WebRevenueFeignClient;
 import com.maximus.webms.models.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service("RevenueService")
 public class WebRevenueService implements SumRecords{
@@ -39,6 +41,7 @@ public class WebRevenueService implements SumRecords{
     }
 
     public Double getSumOfRecordsBetweenDates(LocalDate fromDate, LocalDate toDate){
+        log.info("отправка запроса на расчет суммы доходов на модуль revenues-ms");
         return webRevenueFeignClient.summarizeRevenueRecords(fromDate, toDate);
     }
 

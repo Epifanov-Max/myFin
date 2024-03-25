@@ -29,18 +29,8 @@ public class WebBalanceController {
     @Autowired
     private final WebBalanceService webBalanceService;
 
-//    @GetMapping("/balance-list")
-//    public ModelAndView showData() {
-//        ModelAndView mav = new ModelAndView("balance-list");
-//        List<BalanceRecord> listBalanceRecords = webBalanceService.getAllBalanceRecords();
-//        mav.addObject("balanceRecords", listBalanceRecords);
-//        log.info("Показана форма списка остатков");
-//        return mav;
-//    }
-
     @GetMapping("/balance-list")
     public String showData(Model model) {
-//        ModelAndView mav = new ModelAndView("balance-list");
         List<BalanceRecord> listBalanceRecords = webBalanceService.getAllBalanceRecords();
         model.addAttribute("balanceRecords", listBalanceRecords);
         log.info("Показана форма списка остатков");

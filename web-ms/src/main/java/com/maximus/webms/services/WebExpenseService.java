@@ -3,6 +3,7 @@ package com.maximus.webms.services;
 import com.maximus.webms.feignclients.WebExpenseFeignClient;
 import com.maximus.webms.models.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service("ExpenseService")
 public class WebExpenseService implements SumRecords{
@@ -29,14 +31,17 @@ public class WebExpenseService implements SumRecords{
     }
 
     public List<ExpenseType> getExpenseTypesByCategoryId(Long expenseCategoryId) {
+        log.info("Обращение по feign client к expenses-ms по поиску по id");
         return webExpenseFeignClient.getExpenseTypesByExpCatId(expenseCategoryId);
     }
 
     public List<SubjectType> getSubjectTypesByExpenseTypeId(Long expenseTypeId) {
+        log.info("Обращение по feign client к expenses-ms по поиску по id");
         return webExpenseFeignClient.getSubjectTypesByExpTypeId(expenseTypeId);
     }
 
     public List<Subject> getSubjectBySubjectTypeId(Long subjectTypeId) {
+        log.info("Обращение по feign client к expenses-ms по поиску по id");
         return webExpenseFeignClient.getSubjectBySubjectTypeId(subjectTypeId);
     }
 
@@ -65,9 +70,7 @@ public class WebExpenseService implements SumRecords{
         return webExpenseFeignClient.getExpenseRecordById(paymentRecordId);
     }
     public Double getSumOfRecordsBetweenDates(LocalDate fromDate, LocalDate toDate){
-//        if (fromDate ==null) {
-//            fromDate = getLastBalanceRecord(toDate).balanceDate();
-//        }
+        log.info("отправка запроса на расчет суммы расходов на модуль expenses-ms");
         return webExpenseFeignClient.summarizePaymentRecords(fromDate, toDate);
     }
 

@@ -9,23 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Класс контроллер пользователей
+ * Класс контроллер типов объектов
  */
-
 @Data
 @RestController
 @RequestMapping("/subjects")
-//@RequiredArgsConstructor
 public class SubjectTypeController {
 
     private final SubjectTypeService subjectTypeService;
 
-
-
     /**
-     * Получение списка всех пользователей по Get-запросу с эндпоинта "/expenseTypes"
-     *
-     * @return список всех пользователей
+     * Получение списка всех типов объектов по Get-запросу на эндпоинт "/subjects/type"
      */
     @GetMapping("/type")
     public List<SubjectType> getAllSubjectTypes(){
@@ -33,9 +27,7 @@ public class SubjectTypeController {
     }
 
     /**
-     * Получение пользователя по ID по Get-запросу c эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @return запрашиваемый пользователь
+     * Получение типа объектов по ID по Get-запросу на эндпоинт "/subjects/type/id"
      */
     @GetMapping("/type/{id}")
     public SubjectType getSubjectTypeById(@PathVariable("id") Long id){
@@ -43,9 +35,7 @@ public class SubjectTypeController {
     }
 
     /**
-     * Добавление нового пользователя из тела Post-запроса с эндпоинта "/expenseTypes"
-     * @param subjectType новый пользователь
-     * @return добавленный пользователь
+     * Добавление нового типа объектов из тела Post-запроса на эндпоинт "/subjects/type"
      */
     @PostMapping("/type")
     public SubjectType addSubjectType(@RequestBody SubjectType subjectType){
@@ -53,11 +43,8 @@ public class SubjectTypeController {
     }
 
     /**
-     * Изменение данных пользователя из тела Put-запроса
-     * с эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @param subjectType пользователь с обновленными данными
-     * @return обновленный пользователь
+     * Изменение данных типа объектов по id объекта и данным из тела Put-запроса
+     * на эндпоинт "/subjects/type/id"
      */
     @PutMapping("/type/{id}")
     public SubjectType updateSubjectType(@PathVariable Long id, @RequestBody SubjectType subjectType){
@@ -65,11 +52,9 @@ public class SubjectTypeController {
     }
 
     /**
-     * Удаление пользователя по DELETE-запросу
-     *      * с эндпоинта "/expenseTypes/{id}
-     * @param id идентификатор пользователя
+     * Удаление типа объектов по Id по DELETE-запросу на эндпоинт "/subjects/type/id
      */
-    @DeleteMapping("/type/{id}")
+    @DeleteMapping("/subjects/type/id")
     public void deleteSubjectType(@PathVariable Long id){
         subjectTypeService.deleteSubjectType(id);
     }

@@ -5,17 +5,17 @@ spring:
   application:
     name: balance-ms
   datasource:
-    url: jdbc:mysql://localhost:3377/myFinance
+    url: jdbc:mysql://localhost:3306/myFinance
     username: root
-    password: Akihabar@1
+    password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
       max-file-size: 10MB
   jpa:
-    #    hibernate:
-    #      ddl-auto: update
     show-sql: true
-  #    generate-ddl: true
-  #    defer-datasource-initialization: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
 

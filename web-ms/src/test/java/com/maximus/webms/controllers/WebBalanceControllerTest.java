@@ -17,7 +17,6 @@ class WebBalanceControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //
     @Test
     public void showDataTest() throws Exception {
         this.mockMvc.perform(get("/balance-list"))
@@ -26,5 +25,4 @@ class WebBalanceControllerTest {
                 .andExpect(content()
                         .string(containsString("Сальдо")));
     }
-
 }

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Класс контроллер записей остатка
+ */
 @Data
 @RequiredArgsConstructor
 @RestController
@@ -23,21 +26,35 @@ public class BalanceRecordController {
     }
 
 
+    /**
+     * Получение ближайшей по времени к запрашиваемой дате записи остатка
+     * @param checkDate дата, от которой идет поиск
+     * @return запись остатка
+     */
     @GetMapping("/last-record")
     public BalanceRecord getLastBalanceRecord(@RequestParam("checkDate")LocalDate checkDate){
         return balanceRecordService.findLastBalanceRecord(checkDate);
     }
 
+    /**
+     * Получение записи остатка по id
+     */
     @GetMapping("/{id}")
     public BalanceRecord getBalanceRecordById(@PathVariable("id") Long id){
         return balanceRecordService.getBalanceRecordById(id);
     }
 
+    /**
+     * добавление новой записи остатка
+     */
     @PostMapping("/save-balance-record")
     public void addBalanceRecord(@RequestBody BalanceRecord balanceRecord) {
         balanceRecordService.addBalanceRecord(balanceRecord);
     }
 
+    /**
+     * Обновление записи остатка
+     */
     @GetMapping("/update/{id}")
     public BalanceRecord updateBalanceRecord(@PathVariable Long id, @RequestBody BalanceRecord balanceRecord){
         return balanceRecordService.updateBalanceRecord(id, balanceRecord);

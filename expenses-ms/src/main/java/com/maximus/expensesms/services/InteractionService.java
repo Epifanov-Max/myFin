@@ -33,19 +33,17 @@ public class InteractionService {
     }
 
     /**
-     * Добавление типа объектов к типу расходов
-     * @param expenseTypeId
-     * @param subjectType
-     * @return
+     * Добавление типа объектов к типу расходов по их id
+     *
      */
     public SubjectType addSubjectTypeToExpenseType(Long expenseTypeId, SubjectType subjectType) {
-
-        SubjectType subjType = expenseTypeRepo.findById(expenseTypeId)
+        SubjectType resultSubjType = expenseTypeRepo.findById(expenseTypeId)
                 .map(expType -> {
                     Long subjTypeId = subjectType.getId();
 
                     if (subjTypeId != 0L) {
-                        SubjectType _subjType = subjectTypeRepo.findById(subjTypeId).orElseThrow(() -> new RuntimeException("Not found Subject Type with id = " + subjTypeId));
+                        SubjectType _subjType = subjectTypeRepo.findById(subjTypeId).orElseThrow(() ->
+                                new RuntimeException("! Не найден тип объекта с id = " + subjTypeId));
                         expType.addSubjectType(_subjType);
                         expenseTypeRepo.save(expType);
                         return _subjType;
@@ -54,13 +52,11 @@ public class InteractionService {
                         subjectTypeRepo.save(subjectType);
                         return subjectType;
                     }
-
                 })
-                .orElseThrow(() -> new RuntimeException("Not found Expense Type with id = " + expenseTypeId));
-        return subjType;
+                .orElseThrow(() -> new RuntimeException("Не найден тип расходов с id = " + expenseTypeId));
+        return resultSubjType;
     }
 
-    //TODO:  DONE
     /**
      * Получение списка типов объектов по типу расходов
      * @param expenseTypeId
@@ -82,6 +78,9 @@ public class InteractionService {
         return expenseTypeRepo.getExpenseTypesBySubjectTypesId(subjectTypeId);
     }
 
+    /**
+     * Получение списка объектов по id типа расходов
+     */
     public List<Subject> getSubjectsByExpenseTypeId (Long expenseTypeId){
         List<SubjectType> subjTypes = getSubjectTypesByExpenseTypeId(expenseTypeId);
         List<Subject> subjectList = new ArrayList<>();
@@ -90,13 +89,12 @@ public class InteractionService {
         }
         return subjectList;
 
-
     }
 
+    /**
+     * Получение объекта по id типа объектов
+     */
     public List<Subject> getSubjectBySubjectTypeId(Long subjectTypeId) {
         return subjectRepo.getSubjectsBySubjectTypeId(subjectTypeId);
     }
-
-
-
 }

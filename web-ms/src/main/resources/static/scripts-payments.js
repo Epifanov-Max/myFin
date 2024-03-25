@@ -93,7 +93,7 @@ function sortBy(choice, column) {
         mySearch = table.search.fixed('range', function (searchStr, result, index) {
 
 
-            var columnData = result[column]; // use data for the age column
+            var columnData = result[column]; 
             if (selectedValue == columnData) {
                 return true; //
             }

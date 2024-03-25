@@ -20,17 +20,13 @@ public class Subject {
     private String address;
     private String note;
 
-    /** Тип объекта */
+    /**
+     * Тип объекта со связью (внешним ключом) с id объекта
+     * связь типа многие-к-одному
+     */
     @ManyToOne
     @JoinColumn(name="id_type", referencedColumnName = "id", nullable = false)
     private SubjectType subjectType;
-
-
-
-
-//    public Subject (String typeName){
-//        this.typeName = typeName;
-//    }
 
 }
 

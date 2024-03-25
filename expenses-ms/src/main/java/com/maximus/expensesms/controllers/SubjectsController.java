@@ -11,22 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Класс контроллер пользователей
+ * Класс контроллер объектов расходов
  */
-
 @Data
 @RestController
 @RequestMapping("/subjects")
-//@RequiredArgsConstructor
 public class SubjectsController {
 
     private final SubjectService subjectService;
     private final InteractionService interactionService;
 
     /**
-     * Получение списка всех объектов по Get-запросу с эндпоинта "/expenseTypes"
-     *
-     * @return список всех пользователей
+     * Получение списка всех объектов по Get-запросу на эндпоинт "/subjects"
      */
     @GetMapping
     public List<Subject> getAllSubjects(){
@@ -34,9 +30,7 @@ public class SubjectsController {
     }
 
     /**
-     * Получение пользователя по ID по Get-запросу c эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @return запрашиваемый пользователь
+     * Получение объекта по ID по Get-запросу на эндпоинт "/subjects/id"
      */
     @GetMapping("/{id}")
     public Subject getSubjectById(@PathVariable("id") Long id){
@@ -44,9 +38,7 @@ public class SubjectsController {
     }
 
     /**
-     * Добавление нового пользователя из тела Post-запроса с эндпоинта "/expenseTypes"
-     * @param subject новый пользователь
-     * @return добавленный пользователь
+     * Добавление нового объекта из тела Post-запроса на эндпоинта "/subjects"
      */
     @PostMapping
     public Subject addSubject(@RequestBody Subject subject){
@@ -54,11 +46,10 @@ public class SubjectsController {
     }
 
     /**
-     * Изменение данных пользователя из тела Put-запроса
-     * с эндпоинта "/expenseTypes/id"
-     * @param id идентификатор пользователя
-     * @param subject пользователь с обновленными данными
-     * @return обновленный пользователь
+     * Изменение данных объекта из тела Put-запроса на эндпоинт "/subjects/id"
+     * @param id идентификатор объекта
+     * @param subject обновленные данные объекта в виде созданного объекта
+     * @return обновленный объект
      */
     @PutMapping("/{id}")
     public Subject updateSubject(@PathVariable Long id, @RequestBody Subject subject){
@@ -66,15 +57,18 @@ public class SubjectsController {
     }
 
     /**
-     * Удаление пользователя по DELETE-запросу
-     *      * с эндпоинта "/expenseTypes/{id}
-     * @param id идентификатор пользователя
+     * Удаление объекта по DELETE-запросу на эндпоинт "/subjects/{id}
+     * @param id идентификатор объекта
      */
     @DeleteMapping("/{id}")
     public void deleteSubject(@PathVariable Long id){
         subjectService.deleteSubject(id);
     }
 
+    /**
+     * Получение списка типов расходов по id объекта
+     * по DELETE-запросу на эндпоинт "/subjects/{id}/expense-types"
+     */
     @GetMapping("/{id}/expense-types")
     public List<ExpenseType> getExpenseTypesByObjectId(@PathVariable("id") Long objectId){
         return interactionService.getExpenseTypesBySubjectsId(objectId);

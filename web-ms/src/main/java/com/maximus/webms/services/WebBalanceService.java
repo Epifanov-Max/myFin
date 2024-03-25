@@ -4,6 +4,7 @@ import com.maximus.webms.feignclients.WebBalanceFeignClient;
 import com.maximus.webms.models.*;
 import com.maximus.webms.models.BalanceRecord;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Data
 @Service
 public class WebBalanceService {
@@ -52,6 +54,7 @@ public class WebBalanceService {
             addBalanceRecord(new BalanceRecord(1L, 0D,
                     "Автоматическое внесение на начало работы программы",
                     LocalDate.parse("1900-01-01"), null));
+            log.info("Автоматическое внесение записи остатка при начале работы");
         }
         return  getBalanceOfOperationsBetweenDates(fromDate, checkDate);
     }
@@ -106,6 +109,8 @@ public class WebBalanceService {
                             1L, 1L, " ",
                             correctionAmount, "автокорректировка исходя из внесенного остатка ",
                             balanceRecord.balanceDate().minusDays(1), null));
+            log.info("Внесение корректирующей записи в расходы на сумму {}  датой {} ", correctionAmount,
+                    balanceRecord.balanceDate().minusDays(1));
         } else {
             if (sumDeltaOperationsBetweenBalanceRecordsDates >= 0) {
                 correctionAmount = balancesDifference - sumDeltaOperationsBetweenBalanceRecordsDates;
@@ -116,6 +121,8 @@ public class WebBalanceService {
                     new RevenueRecord(0L, 1L, correctionAmount,
                             "автокорректировка исходя из внесенного остатка",
                             balanceRecord.balanceDate().minusDays(1), null));
+            log.info("Внесение корректирующей записи в доходы на сумму {}  датой {}", correctionAmount,
+                    balanceRecord.balanceDate().minusDays(1));
         }
     }
 

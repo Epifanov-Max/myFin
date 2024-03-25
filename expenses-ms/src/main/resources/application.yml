@@ -5,9 +5,12 @@ spring:
   application:
     name: expenses-ms
   datasource:
-    url: jdbc:mysql://localhost:3377/myFinance
+    url: jdbc:mysql://localhost:3306/myFinance
     username: root
-    password: Akihabar@1
+    password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update

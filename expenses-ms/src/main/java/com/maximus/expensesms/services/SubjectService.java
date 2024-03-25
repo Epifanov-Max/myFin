@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Класс-сервис обработки пользователей
+ * Класс-сервис обработки объектов
  */
 @Service
 @RequiredArgsConstructor
@@ -19,45 +19,33 @@ public class SubjectService {
 
 
     /**
-     * Получение списка пользователей
-     *
-     * @return список всех пользователей
-     */
+     * Получение списка всех объектов
+      */
     public List<Subject>  getAllSubjects() {
         return subjectRepo.findAll();
     }
 
     /**
-     * Получение пользователя по ID
-     *
-     * @param id идентификатор пользователя
-     * @return запрошенный пользователь
+     * Получение объекта по ID
      */
-//    @TrackSubjectAction
     public Subject getSubjectById(Long id) {
         Optional<Subject> optSubject = subjectRepo.findById(id);
         return optSubject.orElse(null);
     }
 
     /**
-     * Добавление нового пользователя
-     *
-     * @param subject новый пользователь
-     * @return добавленный пользователь
+     * Добавление нового объекта
      */
-//    @TrackSubjectAction
     public Subject addSubject(Subject subject) {
         return subjectRepo.save(subject);
     }
 
     /**
-     * Изменение данных пользователя
-     *
-     * @param id          идентификатор пользователя
-     * @param subjectDetails пользователь с обновленными данными, (полученными из контроллера)
-     * @return измененный пользователь
+     * Изменение данных объекта
+     * @param id          идентификатор объекта
+     * @param subjectDetails объект с обновленными данными, (полученными из контроллера)
+     * @return измененный объект
      */
-//    @TrackSubjectAction
     public Subject updateSubject(Long id, Subject subjectDetails) {
         Optional<Subject> optionalSubject = subjectRepo.findById(id);
         if (optionalSubject.isPresent()) {
@@ -65,8 +53,6 @@ public class SubjectService {
             subject.setName(subjectDetails.getName());
             subject.setAddress(subjectDetails.getAddress());
             subject.setNote(subjectDetails.getNote());
-
-//            subject.setIdExp(expenseTypeDetails.getIdExp());
             return subjectRepo.save(subject);
         } else {
             throw new IllegalArgumentException("Тип объекта с id" + id + "не найден");
@@ -75,16 +61,17 @@ public class SubjectService {
 
     /**
      * Удаление объекта по ID
-     *
-     * @param id идентификатор объекта
      */
     public void deleteSubject(Long id) {
         subjectRepo.deleteById(id);
     }
 
+    /**
+     *  Получение списка объектов по id типа расходов
+     * @param subjectTypeId
+     * @return
+     */
     public List<Subject> getSubjectsBySubjectTypeId(Long subjectTypeId){
         return subjectRepo.getSubjectsBySubjectTypeId(subjectTypeId);
     }
-
-
 }

@@ -141,7 +141,7 @@ public class WebBalanceService {
             webExpenseService.addPaymentRecord(
                     new ExpenseRecord(0L, 1L, 1L,
                             1L, 1L, " ",
-                            correctionAmount, "автокорректировка исходя из внесенного остатка ",
+                            correctionAmount, "автокорректировка исходя из внесенного остатка ",null,
                             balanceRecord.balanceDate().minusDays(1), null));
             log.info("Внесение корректирующей записи в расходы на сумму {}  датой {} ", correctionAmount,
                     balanceRecord.balanceDate().minusDays(1));

@@ -1,4 +1,4 @@
-package com.maximus.expensesms.models;
+package com.maximus.expensesms.models.records;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -48,6 +48,9 @@ public class PaymentRecord {
 
     /** примечание */
     private String note;
+
+    /** регулярность платежа */
+    private Regularity regularity;
 
     /**
      * дата транзакции

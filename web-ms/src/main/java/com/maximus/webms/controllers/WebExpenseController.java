@@ -1,5 +1,6 @@
 package com.maximus.webms.controllers;
 
+import com.maximus.webms.dtos.ExpenseRecordDTO;
 import com.maximus.webms.models.*;
 import com.maximus.webms.services.WebExpenseService;
 import lombok.Data;
@@ -10,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /** Веб-контроллер записей расходов */
 @Data
@@ -27,10 +26,12 @@ public class WebExpenseController {
     @GetMapping("/payments-list")
     public ModelAndView showData() {
         ModelAndView mav = new ModelAndView("payments-list");
-        List<ExpenseRecord> listPayments = webExpenseService.getAllExpenseRecords();
-        mav.addObject("payments", listPayments);
-        Map<Long, List<String>> map = new HashMap<>(webExpenseService.mapPaymentStringRecords());
-        mav.addObject("stringValues", map);
+//        List<ExpenseRecord> listPayments = webExpenseService.getAllExpenseRecords();
+        List<ExpenseRecordDTO> listDTOExpenseRecords = webExpenseService.getAllDTOExpenseRecords();
+
+        mav.addObject("payments", listDTOExpenseRecords);
+//        Map<Long, List<String>> map = new HashMap<>(webExpenseService.mapPaymentStringRecords());
+//        mav.addObject("stringValues", map);
         return mav;
     }
 
@@ -51,12 +52,14 @@ public class WebExpenseController {
     public ModelAndView addPaymentRecordForm() {
         ModelAndView mav = new ModelAndView("add-payment-form");
         ExpenseRecord newPaymentRecord = new ExpenseRecord(0L, 0L, 0L, 0L, 0L,
-                "", 0D, "", null, null);
+                "", 0D, "", null, null,null);
         List<ExpenseCategory> listExpTypeByCat = webExpenseService.listOfExpenseCategories();
+        List<Regularity> listRegularities = webExpenseService.getStringRegularities();
         String page_name = "Добавление оплаты";
         mav.addObject("page_name", page_name);
         mav.addObject("paymentRecord", newPaymentRecord);
         mav.addObject("categories", listExpTypeByCat);
+        mav.addObject("regularities", listRegularities );
         return mav;
     }
 

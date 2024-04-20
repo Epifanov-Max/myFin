@@ -37,6 +37,12 @@ public class SubjectsController {
         return subjectService.getSubjectById(id);
     }
 
+    @GetMapping("/{id}/name")
+    public String getStringSubjectById(@PathVariable("id") Long id){
+        return subjectService.getSubjectById(id).getName();
+    }
+
+
     /**
      * Добавление нового объекта из тела Post-запроса на эндпоинта "/subjects"
      */

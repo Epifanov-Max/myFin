@@ -2,13 +2,10 @@ package com.maximus.webms.feignclients;
 
 import com.maximus.webms.models.*;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpInputMessage;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @FeignClient(name= "exp-records-service",url="http://127.0.0.1:8002" )
 public interface WebExpenseFeignClient {
@@ -16,8 +13,8 @@ public interface WebExpenseFeignClient {
     @GetMapping("/payments")
     List<ExpenseRecord> getAllExpenseRecords();
 
-    @GetMapping("/payments/string-mapping")
-    Map<Long, List<String>> mapPaymentStringRecords();
+//    @GetMapping("/payments/string-mapping")
+//    Map<Long, List<String>> mapPaymentStringRecords();
 
     @GetMapping("/expense-types/categories")
     List<ExpenseCategory> listOfExpenseCategories();
@@ -30,6 +27,9 @@ public interface WebExpenseFeignClient {
 
     @GetMapping("/payments/toggle/object-type/{id}")
     List<Subject> getSubjectBySubjectTypeId(@PathVariable("id") Long subjectTypeId);
+
+    @GetMapping("/payments/toggle/regularity")
+    List<Regularity> getStringRegularities();
 
     @PostMapping("/payments/save-payment-record")
     void addExpenseRecord(ExpenseRecord expenseRecord);
@@ -50,4 +50,12 @@ public interface WebExpenseFeignClient {
 
     @GetMapping("/subjects/type")
     List<SubjectType> getAllSubjectTypes();
+
+
+    @GetMapping("/expense-types/{id}/name")
+    String getStringExpenseTypeById(@PathVariable("id") Long dataId);
+
+
+    @GetMapping("/subjects/{id}/name")
+    String getStringSubjectById(@PathVariable("id") Long dataId);
 }

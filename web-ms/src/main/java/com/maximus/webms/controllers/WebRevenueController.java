@@ -30,7 +30,7 @@ public class WebRevenueController {
         ModelAndView mav = new ModelAndView("revenues-list");
         List<RevenueRecord> listRevenues = webRevenueServiceMain.getAllRevenueRecords();
         mav.addObject("revenues", listRevenues);
-        Map<Long, String> map = new HashMap<>(webRevenueServiceMain.mapPaymentStringRecords());
+        Map<Long, String> map = new HashMap<>(webRevenueServiceMain.mapRevenueStringRecords());
         mav.addObject("stringValue", map);
         return mav;
     }

@@ -49,6 +49,16 @@
         <input type="text" th:field="${paymentRecord.period}" placeholder="Введите период платежа" class="form-control col-4 mb-4"/>
         <input type="number" min="0" step="0.01" onfocus="(this.type='number')" onblur="(this.type = 'text')" th:field="${paymentRecord.amount}" placeholder="Введите сумму" class="form-control col-4 mb-4"/>
         <input type="text" th:field="${paymentRecord.note}" placeholder="Введите примечание" class="form-control col-4 mb-4"/>
+        <select th:field="${paymentRecord.regularity}" class="form-control col-4 mb-4" id = "regularity" >
+
+            <option value="">  Разовый или регулярный платеж </option>
+            <option th:each="regularity : ${regularities}" 
+                th:value="${regularity}"
+                th:text="${regularity.getCode()}"
+                th:selected = "${regularity==paymentRecord.regularity}">
+            </option>
+        
+        </select>
         <input type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" th:field="${paymentRecord.paymentDate}" placeholder="Введите дату оплаты" class="form-control col-4 mb-4"/>
 
         <button class="btn btn-primary" type="submit">Сохранить</button>

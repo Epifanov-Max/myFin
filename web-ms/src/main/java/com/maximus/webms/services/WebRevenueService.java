@@ -26,7 +26,7 @@ public class WebRevenueService implements SumRecords{
     public RevenueRecord getRevenueRecordById(Long id){
         return webRevenueFeignClient.getRevenueRecordById(id);
     }
-    public Map<Long, String> mapPaymentStringRecords(){
+    public Map<Long, String> mapRevenueStringRecords(){
         return webRevenueFeignClient.mapRevenueStringRecords();
     }
 

@@ -1,16 +1,15 @@
 package com.maximus.expensesms.controllers;
 
 import com.maximus.expensesms.models.*;
+import com.maximus.expensesms.models.records.PaymentRecord;
+import com.maximus.expensesms.models.records.Regularity;
 import com.maximus.expensesms.services.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /** Класс контроллер записей расходов */
 @Data
@@ -70,11 +69,11 @@ public class PaymentRecordsController {
      * Получение словаря с ключами в виде id поля записи расходов и значениями в виде названий этих полей
      * @return словарь
      */
-    @GetMapping("/string-mapping")
-    public Map<Long, List<String>> mapPaymentStringRecords(){
-        return paymentRecordsService.recordsStringProcessing(paymentRecordsService.getAllPaymentRecords());
-
-    }
+//    @GetMapping("/string-mapping")
+//    public Map<Long, List<String>> mapPaymentStringRecords(){
+//        return paymentRecordsService.recordsStringProcessing(paymentRecordsService.getAllPaymentRecords());
+//
+//    }
 
     /**
      * Получение списка типов расходов по id категории расходов
@@ -99,5 +98,11 @@ public class PaymentRecordsController {
     public List<Subject> getSubjectBySubjectTypeId(@PathVariable("id") Long subjectTypeId) {
         return interactionService.getSubjectBySubjectTypeId(subjectTypeId);
     }
+
+    @GetMapping("/toggle/regularity")
+    public List<Regularity> getStringRegularity() {
+        return paymentRecordsService.getAllRegularities();
+    }
+
 
 }

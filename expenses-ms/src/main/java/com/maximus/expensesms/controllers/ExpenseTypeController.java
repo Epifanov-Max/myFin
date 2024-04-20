@@ -40,6 +40,11 @@ public class ExpenseTypeController {
         return expenseTypeService.getExpenseTypeById(id);
     }
 
+    @GetMapping("/{id}/name")
+    public String getExpenseTypeNameById(@PathVariable("id") Long id){
+        return expenseTypeService.getExpenseTypeById(id).getName();
+    }
+
     /**
      * Добавление нового типа расходов из тела Post-запроса на эндпоинт "/expenseTypes"
      * @param expenseType новый тип расходов

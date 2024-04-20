@@ -8,14 +8,14 @@ $(document).ready(function () {
             const table = $('#project-table').DataTable();
             const tableData = table.rows({ search: 'applied' }).data().toArray();
             const totals = tableData.reduce((total, rowData) => {
-                total += parseFloat(rowData[6]);
+                total += parseFloat(rowData[4]); // column number for amount hardcoded
                 return total;
             }, 0);
             $('#total-amount').text("Итого: " + totals + " рублей");
         }
     });
-    searchSelectFunction('objects', 'idObjects');
-    searchSelectFunction('expense-types', 'idExpenseTypes');
+    //searchSelectFunction('objects', 'idObjects');
+    //searchSelectFunction('expense-types', 'idExpenseTypes');
 
 });
 
@@ -27,7 +27,7 @@ function dateSortFunction() {
     table.search.fixed('range', function (searchStr, result, index) {
         var min = Date.parse(minEl.value);
         var max = Date.parse(maxEl.value);
-        var columnDate = Date.parse(result[8]); // use data for the age column
+        var columnDate = Date.parse(result[7]); // use data for the payment date column
         if (min <= columnDate
             && max >= columnDate) {
             return true; //

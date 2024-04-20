@@ -1,11 +1,12 @@
 package com.maximus.expensesms.services;
 
 
-import com.maximus.expensesms.models.ExpenseType;
-import com.maximus.expensesms.models.PaymentRecord;
-import com.maximus.expensesms.models.Subject;
-import com.maximus.expensesms.models.SubjectType;
+import com.maximus.expensesms.models.records.PaymentRecord;
+import com.maximus.expensesms.models.records.Periodicity;
+import com.maximus.expensesms.models.records.Regularity;
+import com.maximus.expensesms.models.records.Reminder;
 import com.maximus.expensesms.repositories.PaymentRecordsRepo;
+import com.maximus.expensesms.repositories.ReminderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.*;
 public class PaymentRecordsService {
 
     private final PaymentRecordsRepo paymentsRepo;
+
     private final ExpenseTypeService expenseTypeService;
     private final SubjectTypeService subjectTypeService;
     private final SubjectService subjectService;
@@ -31,6 +33,13 @@ public class PaymentRecordsService {
         }
         return list;
     }
+
+    public List<Regularity> getAllRegularities(){
+        return List.of(Regularity.values());
+    }
+
+
+
 
     public void generateInitialDataExamples() {
         expenseTypeService.generateExpenseCategories();
@@ -66,7 +75,7 @@ public class PaymentRecordsService {
         return paymentsRepo.save(paymentRecord);
     }
 
-    //region Вспомогательные методы по сбору данных в строку и сумма
+    //region Вспомогательные методы по сбору данных в строку
 
     /**
      * Получение списка названий сущностей по их id:
@@ -75,31 +84,31 @@ public class PaymentRecordsService {
      * @param paymentRecord запись расходов
      * @return список строковых значений
      */
-    public List<String> dataToStringMapping(PaymentRecord paymentRecord) {
+//    public List<String> dataToStringMapping(PaymentRecord paymentRecord) {
+//
+//
+//        ExpenseType expType = expenseTypeService.getExpenseTypeById(paymentRecord.getIdExpenseType());
+//        String expCategory = expType.getExpenseCategory().getName();
+//        String expTypeString = expType.getName();
+//
+//        SubjectType subjectType = subjectTypeService.getSubjectTypeById(paymentRecord.getIdSubjectType());
+//        String subjTypeString = subjectType.getName();
+//
+//        Subject subject = subjectService.getSubjectById(paymentRecord.getIdSubject());
+//        String subjectString = subject.getName();
+//
+//        List<String> dataStringList = new ArrayList<>(List.of(expCategory, expTypeString, subjTypeString, subjectString));
+//
+//        return dataStringList;
+//    }
 
-
-        ExpenseType expType = expenseTypeService.getExpenseTypeById(paymentRecord.getIdExpenseType());
-        String expCategory = expType.getExpenseCategory().getName();
-        String expTypeString = expType.getName();
-
-        SubjectType subjectType = subjectTypeService.getSubjectTypeById(paymentRecord.getIdSubjectType());
-        String subjTypeString = subjectType.getName();
-
-        Subject subject = subjectService.getSubjectById(paymentRecord.getIdSubject());
-        String subjectString = subject.getName();
-
-        List<String> dataStringList = new ArrayList<>(List.of(expCategory, expTypeString, subjTypeString, subjectString));
-
-        return dataStringList;
-    }
-
-    public Map<Long, List<String>> recordsStringProcessing(List<PaymentRecord> paymentRecordList) {
-        Map<Long, List<String>> map = new HashMap<>();
-        for (PaymentRecord pr : paymentRecordList) {
-            map.put(pr.getId(), dataToStringMapping(pr));
-        }
-        return map;
-    }
+//    public Map<Long, List<String>> recordsStringProcessing(List<PaymentRecord> paymentRecordList) {
+//        Map<Long, List<String>> map = new HashMap<>();
+//        for (PaymentRecord pr : paymentRecordList) {
+//            map.put(pr.getId(), dataToStringMapping(pr));
+//        }
+//        return map;
+//    }
     //endregion
 
     /**

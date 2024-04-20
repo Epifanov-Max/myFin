@@ -39,7 +39,7 @@
         <form>
             <div class="by-object-search">
                 <span> Платежи по объекту:  </span> 
-                <select id = "idObjects" onchange="sortBy('idObjects',4)" >
+                <select id = "idObjects" onchange="sortBy('idObjects',2)" >
                 </select>
                 <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button> 
             </div>
@@ -49,7 +49,7 @@
         <form>
             <div class="by-object-search">
                 <span> Платежи по типу расходов:  </span> 
-                <select id = "idExpenseTypes" onchange="sortBy('idExpenseTypes',2)" >
+                <select id = "idExpenseTypes" onchange="sortBy('idExpenseTypes',1)" >
                 </select>
                 <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button> 
             </div>
@@ -62,13 +62,15 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Категория</th>
-            <th>Тип</th>
-            <th>Тип объекта</th>
+            <!--<th>Категория</th> -->
+             <th>Тип расходов</th>
+            <!-- <th>Тип объекта</th> -->
             <th>Объект</th>
             <th>Период</th>
             <th>Сумма</th>
             <th>Примечание</th>
+            <th>Периодичность</th>
+
             <th>Дата платежа</th>
             <th>Дата внесения записи о платеже</th>
             <th>Действия с записью</th>
@@ -79,14 +81,18 @@
             
             <td th:text="${payment.id}"></td>
             
-            <td th:text="${stringValues.get(payment.id)[0]}"></td>
+            <!-- <td th:text="${stringValues.get(payment.id)[0]}"></td>
             <td th:text="${stringValues.get(payment.id)[1]}"></td>
             <td th:text="${stringValues.get(payment.id)[2]}"></td>
-            <td th:text="${stringValues.get(payment.id)[3]}"></td>
+            <td th:text="${stringValues.get(payment.id)[3]}"></td> -->
+            <td th:text="${payment.expenseTypeName}"></td>
+            <td th:text="${payment.subjectName}"></td>
                
             <td th:text="${payment.period}"></td>
             <td th:text="${payment.amount}"></td>
             <td th:text="${payment.note}"></td>
+            <td th:text="${payment.regularity}"></td>
+
             <td th:text="${payment.paymentDate}"></td>
             <td th:text="${payment.inputTime}"></td>
             <td>
@@ -98,7 +104,7 @@
     
     </table>
     <hr/>
-    <div id="total-amount"> </span> </div> 
+    <div id="total-amount"> </div> 
     <hr/>
     <a th:href="@{/main}"> вернуться на главную </a>
 </div>

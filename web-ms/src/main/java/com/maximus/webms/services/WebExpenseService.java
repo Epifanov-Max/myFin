@@ -1,15 +1,15 @@
 package com.maximus.webms.services;
 
+import com.maximus.webms.dtos.ExpenseRecordDTO;
 import com.maximus.webms.feignclients.WebExpenseFeignClient;
 import com.maximus.webms.models.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /** Веб сервисный класс расходов  */
 @Slf4j
@@ -23,9 +23,48 @@ public class WebExpenseService implements SumRecords{
         return webExpenseFeignClient.getAllExpenseRecords();
     }
 
-    public Map<Long, List<String>> mapPaymentStringRecords(){
-        return webExpenseFeignClient.mapPaymentStringRecords();
+    public List<ExpenseRecordDTO> getAllDTOExpenseRecords(){
+        List<ExpenseRecordDTO> expRecsDTOList = new ArrayList<>();
+        List<ExpenseRecord> retrievedList = webExpenseFeignClient.getAllExpenseRecords();
+        for (ExpenseRecord expRec: retrievedList){
+            ExpenseRecordDTO newExpREcDTO = new ExpenseRecordDTO();
+            newExpREcDTO.setId(expRec.id());
+            newExpREcDTO.setNote(expRec.note());
+            newExpREcDTO.setPeriod(expRec.period());
+            newExpREcDTO.setAmount(expRec.amount());
+            newExpREcDTO.setExpenseTypeName(getStringExpenseTypeData(expRec.idExpenseType()));
+            newExpREcDTO.setSubjectName(getStringSubjectData(expRec.idSubject()));
+
+            newExpREcDTO.setRegularity(expRec.regularity().getCode());
+            System.out.println("expRec.regularity.getCode() = " + expRec.regularity().getCode());
+
+            newExpREcDTO.setPaymentDate(expRec.paymentDate());
+            newExpREcDTO.setInputTime(expRec.inputTime());
+            expRecsDTOList.add(newExpREcDTO);
+
+        }
+
+        return expRecsDTOList;
     }
+
+    public List<Regularity> getStringRegularities(){
+        return webExpenseFeignClient.getStringRegularities();
+    }
+
+    public String getStringExpenseTypeData(Long dataId){
+        return webExpenseFeignClient.getStringExpenseTypeById(dataId);
+
+    }
+
+    private String getStringSubjectData(Long dataId) {
+        return webExpenseFeignClient.getStringSubjectById(dataId);
+
+    }
+
+
+//    public Map<Long, List<String>> mapPaymentStringRecords(){
+//        return webExpenseFeignClient.mapPaymentStringRecords();
+//    }
 
     public List<ExpenseCategory> listOfExpenseCategories(){
         return webExpenseFeignClient.listOfExpenseCategories();
@@ -68,6 +107,8 @@ public class WebExpenseService implements SumRecords{
     }
 
     public ExpenseRecord getExpenseRecordById(Long paymentRecordId) {
+
+
         return webExpenseFeignClient.getExpenseRecordById(paymentRecordId);
     }
 

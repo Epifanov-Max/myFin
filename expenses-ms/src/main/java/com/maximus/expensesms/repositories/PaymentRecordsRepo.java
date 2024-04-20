@@ -1,6 +1,6 @@
 package com.maximus.expensesms.repositories;
 
-import com.maximus.expensesms.models.PaymentRecord;
+import com.maximus.expensesms.models.records.PaymentRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

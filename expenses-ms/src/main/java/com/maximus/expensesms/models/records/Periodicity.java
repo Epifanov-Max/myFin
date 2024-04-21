@@ -10,7 +10,7 @@ public enum Periodicity {
     YEARLY("Ежегодно");
 
 
-        private String code;
+        private final String code;
 
         private Periodicity(String code) {
             this.code = code;

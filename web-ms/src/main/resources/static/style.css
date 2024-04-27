@@ -8,7 +8,7 @@ svg {
     width: auto;
     height: auto;
   }
-  .table-head {
+.table-head {
     text-align: center;
     font-size: 1.4rem;
   }
@@ -24,39 +24,44 @@ body {
 
 
 
-
-
-.search-periods {
-    position: relative;
-    justify-content: space-between;
+.sort-data {
+    width:100%;
+    padding: 10px;
+    margin:auto;
+}
+.sort-data button {
+    border-radius: 1.2rem;
+    float: left;
+    margin-right: 15px;
 }
 
+.by-object-search {
+    padding: auto;
+    list-style: none;
+    margin:0 15px 15px 5px;
+
+}
 
 .spann {
-    font-size: 1.5rem;;
+    font-size: 1.5rem;
 }
-
+/* 
 .btn {
     border-radius: 1.2rem;
+    float-right: 15px;
 
-}
-.date-periods, .balance-per-date{
+} */
+.date-periods, 
+.balance-per-date{
     float: right;
     display: flex;
-    justify-content: space-between;
-    align-items:flex-end;
+    /* justify-content: space-between; */
+    /* align-items:flex-end; */
     font-size: 1.0rem;
     height: fit-content;
-    list-style: none;
+    /* list-style: none; */
 }
 
-.by-object-search *{
-    /* display: flex; */
-    padding: 6px;
-    list-style: none;
-    margin-bottom: 10px;
-    margin-left: 5px
-}
 
 .by-object-search #balance-amount {
     width: 300px;
@@ -68,7 +73,6 @@ body {
   }
 #idObjects, #idExpenseTypes, #idRevenueTypes {
     width: 30%; 
-    margin-left: 10px; 
-    margin-right: 10px;
+    height: 30px;
 }
   

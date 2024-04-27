@@ -22,38 +22,44 @@
     <br>
     <h2>Записи платежей</h2>
     <hr/>
-
-    <div class="search-periods">
-        <div class="date-periods">
-            <form> 
-                <input id = "from-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата начала периода"  />
-                <input id = "to-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата конца периода" />
-                <button type="reset"  onclick="showAllRecords()" class="btn btn-warning btn-sm">Сбросить</button>
-            </form>
+    
+    <div class="sort-data">
+        <div class="by-object-search">
+            <!-- <div class="date-periods"> -->
+                <!-- <form> -->
+                    <span>Платежи по периодам </span>
+                    <input id = "from-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата начала периода"  />
+                    <input id = "to-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата конца периода" />
+                    <button type="button"  onclick="showAllRecords()" class="btn btn-warning btn-sm">Сбросить</button>
+                    <button type="reset"  onclick="showAllRecords()" class="btn btn-warning btn-sm">Сбросить</button>
+                <!-- </form> -->
+            <!-- </div> -->
+        
         </div>
+        <!-- <div class="search-by-parameter" > -->
+            <div class="placeholder" id="objects" value="Введите объект"></div>
         
-    </div>
-    <div class="search-by-parameter" >
-        <div class="placeholder" id="objects" value="Введите объект"></div>
-        
-        <form>
             <div class="by-object-search">
-                <span> Платежи по объекту:  </span> 
-                <select id = "idObjects" onchange="sortBy('idObjects',2)" >
-                </select>
-                <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button> 
+                <!-- <form> -->
+                    <span> Платежи по объекту:  </span>
+                    <select id = "idObjects" onchange="sortBy('idObjects',2)" >
+                    </select>
+                    <button type="button" onclick="sortBy('idObjects',2)" style="height: fit-content;" class="btn btn-info btn-sm">Найти</button>
+
+                    <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button>
+                <!-- </form> -->
             </div>
-        </form>
-        <div class="placeholder" id="expense-types" value="Введите тип расходов"></div>
+            <div class="placeholder" id="expense-types" value="Введите тип расходов"></div>
         
-        <form>
             <div class="by-object-search">
-                <span> Платежи по типу расходов:  </span> 
-                <select id = "idExpenseTypes" onchange="sortBy('idExpenseTypes',1)" >
-                </select>
-                <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button> 
+                <!-- <form> -->
+                    <span> Платежи по типу расходов:  </span>
+                    <select id = "idExpenseTypes" onchange="sortBy('idExpenseTypes',1)" >
+                    </select>
+                    <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button>
+                <!-- </form> -->
             </div>
-        </form>
+        <!-- </div> -->
     </div>
 
 

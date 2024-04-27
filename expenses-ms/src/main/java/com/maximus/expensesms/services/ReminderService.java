@@ -72,8 +72,10 @@ public class ReminderService {
         String notification = " Дата платежа  {%s} по объекту {%s}  наступит через {%d} дней";
         getCloseReminders().forEach(reminder -> {
             int daysLeft = Period.between(LocalDate.now(),reminder.getNextDate1()).getDays();
+
             System.out.printf((notification), reminder.getExpenseTypeName(), reminder.getSubjectName(), daysLeft);
         });
+        //TODO отправить в контроллер сообщения с напоминаниями
     }
 
     public void delayNotification(String subjectName, String expenseTypeName){

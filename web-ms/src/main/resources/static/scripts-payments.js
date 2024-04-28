@@ -14,8 +14,8 @@ $(document).ready(function () {
             $('#total-amount').text("Итого: " + totals + " рублей");
         }
     });
-    //searchSelectFunction('objects', 'idObjects');
-    //searchSelectFunction('expense-types', 'idExpenseTypes');
+    searchSelectFunction('objects', 'idObjects');
+    searchSelectFunction('expense-types', 'idExpenseTypes');
 
 });
 
@@ -106,6 +106,8 @@ function sortBy(choice, column) {
 
 function showAllRecords() {
     const table = new DataTable('#project-table');
+    let list = document.getElementById(item);
+    list.
     table.search.fixed('range', function (searchStr, result, index) {
         return true;
     });

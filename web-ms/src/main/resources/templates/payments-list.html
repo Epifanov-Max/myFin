@@ -28,9 +28,9 @@
             <!-- <div class="date-periods"> -->
                 <!-- <form> -->
                     <span>Платежи по периодам </span>
-                    <input id = "from-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата начала периода"  />
-                    <input id = "to-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" onchange="dateSortFunction()" placeholder="дата конца периода" />
-                    <button type="button"  onclick="showAllRecords()" class="btn btn-warning btn-sm">Сбросить</button>
+                    <input id = "from-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')"  placeholder="дата начала периода"  />
+                    <input id = "to-date" type="text" onfocus="(this.type='date')" onblur="(this.type = 'text')" placeholder="дата конца периода" />
+                    <button type="button"  onclick"dateSortFunction()" class="btn btn-info btn-sm">Найти</button>
                     <button type="reset"  onclick="showAllRecords()" class="btn btn-warning btn-sm">Сбросить</button>
                 <!-- </form> -->
             <!-- </div> -->
@@ -42,7 +42,7 @@
             <div class="by-object-search">
                 <!-- <form> -->
                     <span> Платежи по объекту:  </span>
-                    <select id = "idObjects" onchange="sortBy('idObjects',2)" >
+                    <select id = "idObjects"  >
                     </select>
                     <button type="button" onclick="sortBy('idObjects',2)" style="height: fit-content;" class="btn btn-info btn-sm">Найти</button>
 
@@ -54,9 +54,11 @@
             <div class="by-object-search">
                 <!-- <form> -->
                     <span> Платежи по типу расходов:  </span>
-                    <select id = "idExpenseTypes" onchange="sortBy('idExpenseTypes',1)" >
+                    <select id = "idExpenseTypes"  >
                     </select>
-                    <button type="reset" onclick="showAllRecords()" style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button>
+                    <button type="button" onclick="sortBy('idExpenseTypes',1)" style="height: fit-content;" class="btn btn-info btn-sm">Найти</button>
+
+                    <button type="reset" onclick="showAllRecords(); " style="height: fit-content;" class="btn btn-warning btn-sm">Сбросить</button>
                 <!-- </form> -->
             </div>
         <!-- </div> -->

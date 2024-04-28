@@ -1,21 +1,30 @@
-server:
-  port: 8003
+#server:
+#  port: 8003
 
 spring:
   application:
     name: balance-ms
-  datasource:
-    url: jdbc:mysql://localhost:3306/myFinance
-    username: root
-    password: 12345
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  servlet:
-    multipart:
-      max-file-size: 10MB
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
+  config:
+    #    activate:
+    #      on-profile: dev
+    import:
+      configserver:
+  cloud:
+    config:
+      fail-fast: true
+      uri: http://localhost:8888
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/myFinance
+#    username: root
+#    password: 12345
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB
+#  jpa:
+#    show-sql: true
+#    generate-ddl: true
+#    hibernate:
+#      ddl-auto: update
 
 

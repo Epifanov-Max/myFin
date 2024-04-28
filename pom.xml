@@ -7,6 +7,8 @@
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+
+        <module>ConfigServer</module>
         <module>balance-ms</module>
         <module>expenses-ms</module>
         <module>revenues-ms</module>

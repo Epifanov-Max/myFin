@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: ConfigServer
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+#        git:
+          search-locations: file://${user.home}/Documents/Configs/myFin/common-config
+#  :/common-config/{application}
+
+#          uri: file://home/maka/GeekBrains/Java/Spring/DiplomaGB/myFinance/ConfigServer/src/main/resources/common-config

@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="balance-ms" />
         <module name="web-ms" />
+        <module name="ConfigServer" />
         <module name="expenses-ms" />
         <module name="revenues-ms" />
       </profile>
@@ -16,6 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ConfigServer" options="-parameters" />
       <module name="balance-ms" options="-parameters" />
       <module name="expenses-ms" options="-parameters" />
       <module name="revenues-ms" options="-parameters" />

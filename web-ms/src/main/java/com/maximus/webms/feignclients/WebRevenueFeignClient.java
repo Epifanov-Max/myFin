@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name= "rev-records-service",url="http://127.0.0.1:8001" )
+@FeignClient(name= "rev-records-service",url="${address.service.revenues-ms}" )
 public interface WebRevenueFeignClient {
 
     @GetMapping("/revenues")

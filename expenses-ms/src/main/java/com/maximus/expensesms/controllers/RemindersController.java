@@ -31,7 +31,7 @@ public class RemindersController {
     }
 
     @GetMapping("/close-reminders")
-    public void notifications (){
-        reminderService.reminderNotifications();
+    public List<String> notifications (){
+        return reminderService.reminderNotifications();
     }
 }

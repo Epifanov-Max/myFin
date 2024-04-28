@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@FeignClient(name= "exp-records-service",url="http://127.0.0.1:8002" )
+@FeignClient(name= "exp-records-service",url="${address.service.expenses-ms}" )
 public interface WebExpenseFeignClient {
 
     @GetMapping("/payments")

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@FeignClient(name= "balance-records-service",url="http://127.0.0.1:8003" )
+@FeignClient(name= "balance-records-service",url="${address.service.balance-ms}" )
 public interface WebBalanceFeignClient {
 
     @GetMapping("/balance/last-record")

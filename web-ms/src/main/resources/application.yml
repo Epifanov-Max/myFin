@@ -1,3 +1,9 @@
+address:
+  service:
+    balance-ms: http://127.0.0.1:8003
+    expenses-ms: http://127.0.0.1:8002
+    revenues-ms: http://127.0.0.1:8001
+
 server:
   port: 8010
 

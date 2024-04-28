@@ -24,10 +24,11 @@ public class ReminderService {
     private final SubjectService subjectService;
     private final ExpenseTypeService expenseTypeService;
 
+    private List<String> delays = new ArrayList<>();
 
-//    public void addReminder(Long paymentRecordId, Periodicity periodicity, LocalDate nextPaymentDate){
-    public void addReminder(Reminder reminder){
-        if (!reminder.getNextDate1().isBefore(LocalDate.now())) {
+    //    public void addReminder(Long paymentRecordId, Periodicity periodicity, LocalDate nextPaymentDate){
+    public void addReminder(Reminder reminder) {
+//        if (!reminder.getNextDate1().isBefore(LocalDate.now())) {
             PaymentRecord pmntRecord = paymentRecordsService.getRecordById(reminder.getExpenseRecordId());
             String subjectName = subjectService.getSubjectById(pmntRecord.getIdSubject()).getName();
             String expenseTypeName = expenseTypeService.getExpenseTypeById(pmntRecord.getIdExpenseType()).getName();
@@ -36,52 +37,62 @@ public class ReminderService {
             reminder.setNextDate2();
             reminder.setSubjectName(subjectName);
             reminder.setExpenseTypeName(expenseTypeName);
+            log.info(reminder.toString());
             reminderRepo.save(reminder);
-        }
+//        }
 
     }
 
 
-
-    public List<Reminder> getAllReminders (){
+    public List<Reminder> getAllReminders() {
         return reminderRepo.findAll();
     }
 
     //TODO UPDATE REMINDER
 
-    public List<Reminder> getCloseReminders(){
+    public List<Reminder> getCloseReminders() {
 
         List<Reminder> remindersToNotify = new ArrayList<>();
-        for (Reminder reminder: getAllReminders() ){
+        for (Reminder reminder : getAllReminders()) {
 
             // если платеж просрочен
             if (LocalDate.now().isAfter(reminder.getNextDate1())) {
                 delayNotification(reminder.getSubjectName(), reminder.getExpenseTypeName());
 
-            } else if (LocalDate.now().isAfter(reminder.getNextDate1().minusDays(7))){
+            } else if (LocalDate.now().isBefore(reminder.getNextDate1()) &&
+                    LocalDate.now().isAfter(reminder.getNextDate1().minusDays(7))) {
                 remindersToNotify.add(reminder);
-                log.info("Добавлена запись напоминания по платежу в список для вывода на экран:  объект " + reminder.getSubjectName() + ", тип расходов -"
-                        + reminder.getExpenseTypeName() );
+                log.info("Добавлена запись напоминания по платежу в список для вывода на экран:  объект " +
+                        reminder.getSubjectName() + ", тип расходов -" + reminder.getExpenseTypeName());
             }
         }
         return remindersToNotify;
 
     }
 
-    public void reminderNotifications(){
-        String notification = " Дата платежа  {%s} по объекту {%s}  наступит через {%d} дней";
+    public List<String> reminderNotifications() {
+        String notification = " Дата платежа типа '%s' по объекту '%s'  наступит через '%d' дней";
+        List<String> listNotifications = new ArrayList<>();
         getCloseReminders().forEach(reminder -> {
-            int daysLeft = Period.between(LocalDate.now(),reminder.getNextDate1()).getDays();
-
+            int daysLeft = Period.between(LocalDate.now(), reminder.getNextDate1()).getDays();
+            listNotifications.add(String.format((notification), reminder.getExpenseTypeName(),
+                    reminder.getSubjectName(), daysLeft));
             System.out.printf((notification), reminder.getExpenseTypeName(), reminder.getSubjectName(), daysLeft);
         });
-        //TODO отправить в контроллер сообщения с напоминаниями
+
+        if (!delays.isEmpty()) {
+            listNotifications.addAll(0, delays);
+            delays.clear();
+        }
+        return listNotifications;
     }
 
-    public void delayNotification(String subjectName, String expenseTypeName){
-        //TODO Отправить в контроллер сообщение о просрочке платежа
-        System.out.println("Платеж по объекту " + subjectName + " типа '" + expenseTypeName +
-                "' просрочен! " );
+    public void delayNotification(String subjectName, String expenseTypeName) {
+        String delayNote = "Платеж по объекту " + subjectName + " типа '" + expenseTypeName + "' просрочен! ";
+        System.out.println(delayNote);
+        delays.add(delayNote);
+
+
     }
 
 

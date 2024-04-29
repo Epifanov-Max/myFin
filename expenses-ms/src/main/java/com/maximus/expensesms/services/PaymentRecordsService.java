@@ -2,11 +2,9 @@ package com.maximus.expensesms.services;
 
 
 import com.maximus.expensesms.models.records.PaymentRecord;
-import com.maximus.expensesms.models.records.Periodicity;
 import com.maximus.expensesms.models.records.Regularity;
 import com.maximus.expensesms.models.records.Reminder;
 import com.maximus.expensesms.repositories.PaymentRecordsRepo;
-import com.maximus.expensesms.repositories.ReminderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -123,22 +121,38 @@ public class PaymentRecordsService {
      * Обновление записи расходов по id и получаемой записи расходов
      */
     public PaymentRecord updatePaymentRecord(Long id, PaymentRecord paymentRecordDetails) {
-        Optional<PaymentRecord> optionalRecord = paymentsRepo.findById(id);
-        if (optionalRecord.isPresent()) {
-            PaymentRecord paymentRecord = optionalRecord.get();
-            paymentRecord.setIdExpenseCategory(paymentRecordDetails.getIdExpenseCategory());
-            paymentRecord.setIdExpenseType(paymentRecordDetails.getIdExpenseType());
-            paymentRecord.setIdSubjectType(paymentRecordDetails.getIdSubjectType());
-            paymentRecord.setIdSubject(paymentRecordDetails.getIdSubject());
-            paymentRecord.setPeriod(paymentRecordDetails.getPeriod());
-            paymentRecord.setAmount(paymentRecordDetails.getAmount());
-            paymentRecord.setNote(paymentRecordDetails.getNote());
-            paymentRecord.setPaymentDate(paymentRecordDetails.getPaymentDate());
+        Optional<PaymentRecord> recordOptional = paymentsRepo.findById(id);
+        if (recordOptional.isPresent()) {
+            PaymentRecord paymentRecord = recordOptional.get();
 
-            return paymentsRepo.save(paymentRecord);
+//            paymentRecord.setIdExpenseCategory(paymentRecordDetails.getIdExpenseCategory());
+//            paymentRecord.setIdExpenseType(paymentRecordDetails.getIdExpenseType());
+//            paymentRecord.setIdSubjectType(paymentRecordDetails.getIdSubjectType());
+//            paymentRecord.setIdSubject(paymentRecordDetails.getIdSubject());
+//            paymentRecord.setPeriod(paymentRecordDetails.getPeriod());
+//            paymentRecord.setAmount(paymentRecordDetails.getAmount());
+//            paymentRecord.setNote(paymentRecordDetails.getNote());
+//            paymentRecord.setRegularity(paymentRecordDetails.getRegularity());
+//            paymentRecord.setPaymentDate(paymentRecordDetails.getPaymentDate());
+//            return paymentsRepo.save(paymentRecord);
+            return paymentsRepo.save(pmntRecordDataTransferToNewRecord(paymentRecordDetails,paymentRecord));
+
         } else {
             throw new IllegalArgumentException("Запись с id" + id + "не найдена");
         }
+    }
+
+    public PaymentRecord pmntRecordDataTransferToNewRecord(PaymentRecord dataRecord, PaymentRecord optionalRecord ){
+        optionalRecord.setIdExpenseCategory(dataRecord.getIdExpenseCategory());
+        optionalRecord.setIdExpenseType(dataRecord.getIdExpenseType());
+        optionalRecord.setIdSubjectType(dataRecord.getIdSubjectType());
+        optionalRecord.setIdSubject(dataRecord.getIdSubject());
+        optionalRecord.setPeriod(dataRecord.getPeriod());
+        optionalRecord.setAmount(dataRecord.getAmount());
+        optionalRecord.setNote(dataRecord.getNote());
+        optionalRecord.setRegularity(dataRecord.getRegularity());
+        optionalRecord.setPaymentDate(dataRecord.getPaymentDate());
+        return optionalRecord;
     }
 
     public void deletePaymentRecord(Long id) {
@@ -154,5 +168,29 @@ public class PaymentRecordsService {
      */
     public Double summarizeAllPaymentRecords(LocalDate dateFrom, LocalDate dateTo) {
         return paymentsRepo.summarizeAmountsBetweenDates(dateFrom, dateTo);
+    }
+
+    public PaymentRecord proceedRegularPayment(Reminder reminder) {
+
+        Optional<PaymentRecord> recordOptional = paymentsRepo.findById(reminder.getExpenseRecordId());
+        if (recordOptional.isPresent()) {
+            PaymentRecord paymentRecord = recordOptional.get();
+            PaymentRecord newPaymentRecord = pmntRecordDataTransferToNewRecord(paymentRecord,
+                    new PaymentRecord());
+             newPaymentRecord.setAmount(0D);
+             newPaymentRecord.setRegularity(Regularity.REGULAR);
+             newPaymentRecord.setPaymentDate(LocalDate.now());
+             return newPaymentRecord;
+//            newPaymentRecord.setIdExpenseCategory(paymentRecord.getIdExpenseCategory());
+//            newPaymentRecord.setIdExpenseType(paymentRecord.getIdExpenseType());
+//            newPaymentRecord.setIdSubjectType(paymentRecord.getIdSubjectType());
+//            newPaymentRecord.setIdSubject(paymentRecord.getIdSubject());
+//            newPaymentRecord.setPeriod(paymentRecord.getPeriod());
+//            newPaymentRecord.setAmount(paymentRecord.getAmount());
+//            newPaymentRecord.setRegularity(paymentRecord.getRegularity());
+//            newPaymentRecord.setNote(paymentRecord.getNote());
+//            newPaymentRecord.setPaymentDate(paymentRecord.getPaymentDate());
+        }
+        return null;
     }
 }

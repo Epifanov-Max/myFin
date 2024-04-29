@@ -3,6 +3,7 @@ package com.maximus.expensesms.controllers;
 import com.maximus.expensesms.models.*;
 import com.maximus.expensesms.models.records.PaymentRecord;
 import com.maximus.expensesms.models.records.Regularity;
+import com.maximus.expensesms.models.records.Reminder;
 import com.maximus.expensesms.services.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class PaymentRecordsController {
     private final SubjectTypeService subjectTypeService;
     private final SubjectService subjectService;
     private final InteractionService interactionService;
+    private final ReminderService reminderService;
+
 
     @GetMapping
     public List<PaymentRecord> getAllExpenseRecords() {
@@ -48,6 +51,11 @@ public class PaymentRecordsController {
     @PostMapping("/save-payment-record")
     public void addExpenseRecord(@RequestBody PaymentRecord expenseRecord) {
         paymentRecordsService.addPaymentRecord(expenseRecord);
+    }
+
+    @GetMapping("/claim-regular-payment")
+    public PaymentRecord claimRegularPayment(@RequestBody Reminder reminder){
+        return paymentRecordsService.proceedRegularPayment(reminder);
     }
 
     @GetMapping("/update/{id}")

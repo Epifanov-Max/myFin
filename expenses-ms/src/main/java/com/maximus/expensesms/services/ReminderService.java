@@ -1,5 +1,6 @@
 package com.maximus.expensesms.services;
 
+import com.maximus.expensesms.models.ExpenseType;
 import com.maximus.expensesms.models.records.PaymentRecord;
 import com.maximus.expensesms.models.records.Periodicity;
 import com.maximus.expensesms.models.records.Reminder;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -46,6 +48,10 @@ public class ReminderService {
 
     public List<Reminder> getAllReminders() {
         return reminderRepo.findAll();
+    }
+    public Reminder getReminderById(Long id) {
+        Optional<Reminder> optReminder = reminderRepo.findById(id);
+        return optReminder.orElse(null);
     }
 
     //TODO UPDATE REMINDER
